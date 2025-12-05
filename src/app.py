@@ -10,7 +10,6 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 def upload_page():
     return render_template("upload.html")
 
-
 @app.route("/upload", methods=["POST"])
 def upload_file():
     if "file" not in request.files:
@@ -27,9 +26,18 @@ def upload_file():
     file_path = os.path.join(UPLOAD_FOLDER, file.filename)
     file.save(file_path)
 
-    # هنا لاحقاً تضعين كود التحليل (AST + Jinja2)
-    return f"File uploaded successfully: {file.filename}"
+    return redirect(url_for("results_page"))
 
+@app.route("/results")
+def results_page():
+    return render_template(
+        "results.html",
+        lines=42,
+        functions=3,
+        classes=1,
+        imports=2,
+        error="None"
+    )
 
 if __name__ == "__main__":
     app.run(debug=True)

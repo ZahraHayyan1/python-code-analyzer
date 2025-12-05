@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Analysis Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<header>
+    <h1>Python Code Analyzer</h1>
+</header>
+
+<div class="container">
+    <div class="card">
+
+        <h2>Analysis Results</h2>
+
+        <div class="results-box">
+
+            <p><strong>Total Lines:</strong> {{ lines }}</p>
+            <p><strong>Functions:</strong> {{ functions }}</p>
+            <p><strong>Classes:</strong> {{ classes }}</p>
+            <p><strong>Imports:</strong> {{ imports }}</p>
+
+            {% if error and error != "None" %}
+                <p style="color: #b30000; font-weight: bold;">
+                    <strong>Syntax Error:</strong> {{ error }}
+                </p>
+            {% else %}
+                <p><strong>Syntax Errors:</strong> None</p>
+            {% endif %}
+
+        </div>
+
+        <a href="/" class="upload-btn" style="text-decoration: none; display: block; margin-top: 20px;">
+            Upload Another File
+        </a>
+
+    </div>
+</div>
+
+</body>
+</html>
