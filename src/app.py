@@ -1,5 +1,10 @@
 from flask import Flask, render_template, request, redirect, url_for
 import os
+from ast_parser import ASTParser
+
+def generate_ast(code):
+    parser = ASTParser(code)
+    return parser.get_tree() #returns AST tree object
 
 app = Flask(__name__)
 
@@ -28,6 +33,7 @@ def upload_file():
     file.save(file_path)
 
     # هنا لاحقاً تضعين كود التحليل (AST + Jinja2)
+    ast_tree = generate_ast(code)
     return f"File uploaded successfully: {file.filename}"
 
 
