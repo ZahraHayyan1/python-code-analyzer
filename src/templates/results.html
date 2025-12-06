@@ -17,203 +17,251 @@
         <h2 class="section-title">Analysis Results</h2>
         <p class="file-name">File: <span>{{ file_name }}</span></p>
 
+
+        <!-- SUMMARY METRICS -->
         <section class="section">
             <h3>Summary Metrics</h3>
             <table class="metrics-table">
-                <tr>
-                    <th>Metric</th>
-                    <th>Value</th>
-                </tr>
-                <tr>
-                    <td>Total Lines</td>
-                    <td>{{ metrics.total_lines }}</td>
-                </tr>
-                <tr>
-                    <td>Functions</td>
-                    <td>{{ metrics.functions }}</td>
-                </tr>
-                <tr>
-                    <td>Classes</td>
-                    <td>{{ metrics.classes }}</td>
-                </tr>
-                <tr>
-                    <td>Imports</td>
-                    <td>{{ metrics.imports }}</td>
-                </tr>
+                <tr><th>Metric</th><th>Value</th></tr>
+
+                <tr><td>Total Lines</td><td>{{ metrics.total_lines }}</td></tr>
+                <tr><td>Functions</td><td>{{ metrics.functions }}</td></tr>
+                <tr><td>Classes</td><td>{{ metrics.classes }}</td></tr>
+                <tr><td>Imports</td><td>{{ metrics.imports }}</td></tr>
+
                 <tr>
                     <td>Average Complexity</td>
                     <td>
                         {% if metrics.avg_complexity is not none %}
-                            {{ "%.2f"|format(metrics.avg_complexity) }}  
-                            <br><small>Lower is better — reduce branching (if/for) to improve.</small>
-                        {% else %}
-                            N/A
-                        {% endif %}
+                            {{ "%.2f"|format(metrics.avg_complexity) }}
+                        {% else %} N/A {% endif %}
                     </td>
                 </tr>
+
                 <tr>
                     <td>Maintainability Index</td>
                     <td>
                         {% if metrics.maintainability is not none %}
                             {{ "%.2f"|format(metrics.maintainability) }}
-                            <br><small>Higher is better — simplify long functions to improve.</small>
-                        {% else %}
-                            N/A
-                        {% endif %}
+                        {% else %} N/A {% endif %}
                     </td>
                 </tr>
             </table>
+
+            <div class="tips-box">
+                <h4>Notes & Tips</h4>
+                <ul>
+                    <li><strong>Average Complexity:</strong> lower = easier to read. High complexity usually means too many conditions or long logic.</li>
+                    <li><strong>Maintainability Index:</strong> higher = cleaner code. Values above 70 are considered healthy.</li>
+                    <li><strong>Total Lines:</strong> a large file isn't bad, but shorter focused files are usually easier to maintain.</li>
+                </ul>
+            </div>
         </section>
 
+
+
+        <!-- CLASS STRUCTURE -->
         <section class="section">
-            <h3>Detailed Class Structure</h3>
+            <h3>Class Structure</h3>
+
             {% if classes %}
-                <table class="detail-table">
-                    <tr>
-                        <th>Name</th>
-                        <th>Start Line</th>
-                        <th>End Line</th>
-                        <th>LOC</th>
-                        <th>Methods</th>
-                    </tr>
-                    {% for c in classes %}
-                        <tr>
-                            <td>{{ c.name }}</td>
-                            <td>{{ c.line }}</td>
-                            <td>{{ c.end_line }}</td>
-                            <td>{{ c.loc }} <br><small>LOC = Lines of Code</small></td>
-                            <td>{{ c.methods_count }}</td>
-                        </tr>
-                    {% endfor %}
-                </table>
+            <table class="detail-table">
+                <tr><th>Name</th><th>Start</th><th>End</th><th>Lines</th><th>Methods</th></tr>
+                {% for c in classes %}
+                <tr>
+                    <td>{{ c.name }}</td>
+                    <td>{{ c.line }}</td>
+                    <td>{{ c.end_line }}</td>
+                    <td>{{ c.loc }}</td>
+                    <td>{{ c.methods_count }}</td>
+                </tr>
+                {% endfor %}
+            </table>
             {% else %}
-                <p>No classes found.</p>
+            <p>No classes found.</p>
             {% endif %}
+
+            <div class="tips-box">
+                <h4>Notes & Tips</h4>
+                <ul>
+                    <li><strong>Lines:</strong> number of lines inside the class. Large classes can sometimes be split into smaller logical pieces.</li>
+                    <li><strong>Methods Count:</strong> more methods = more responsibility. Classes should be focused and not do too many things.</li>
+                </ul>
+            </div>
         </section>
 
+
+
+        <!-- FUNCTION STRUCTURE -->
         <section class="section">
-            <h3>Detailed Function Structure</h3>
+            <h3>Function Structure</h3>
+
             {% if functions %}
-                <table class="detail-table">
-                    <tr>
-                        <th>Name</th>
-                        <th>Start Line</th>
-                        <th>End Line</th>
-                        <th>LOC</th>
-                        <th>Parameters</th>
-                        <th>Complexity</th>
-                    </tr>
-                    {% for f in functions %}
-                        <tr>
-                            <td>{{ f.name }}</td>
-                            <td>{{ f.line }}</td>
-                            <td>{{ f.end_line }}</td>
-                            <td>{{ f.loc }} <br><small>Shorter functions are easier to maintain.</small></td>
-                            <td>
-                                {% if f.args %}
-                                    {{ f.args|join(", ") }}
-                                {% else %}
-                                    –
-                                {% endif %}
-                            </td>
-                            <td>
-                                {% if f.complexity is not none %}
-                                    {{ f.complexity }}
-                                {% else %}
-                                    N/A
-                                {% endif %}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </table>
+            <table class="detail-table">
+                <tr>
+                    <th>Name</th><th>Start</th><th>End</th><th>Lines</th><th>Params</th><th>Complexity</th>
+                </tr>
+                {% for f in functions %}
+                <tr>
+                    <td>{{ f.name }}</td>
+                    <td>{{ f.line }}</td>
+                    <td>{{ f.end_line }}</td>
+                    <td>{{ f.loc }}</td>
+                    <td>{{ f.args|join(", ") if f.args else "–" }}</td>
+                    <td>{{ f.complexity if f.complexity else "N/A" }}</td>
+                </tr>
+                {% endfor %}
+            </table>
             {% else %}
-                <p>No functions found.</p>
+            <p>No functions found.</p>
             {% endif %}
+
+            <div class="tips-box">
+                <h4>Notes & Tips</h4>
+                <ul>
+                    <li><strong>Shorter functions</strong> are usually easier to understand and reuse.</li>
+                    <li><strong>Complexity</strong> increases when you have many if/elif or loops. Try splitting logic when possible.</li>
+                    <li><strong>Parameters:</strong> functions with too many parameters can be harder to work with.</li>
+                </ul>
+            </div>
         </section>
 
+
+
+        <!-- NESTING -->
         <section class="section">
-            <h3>Nesting Analysis</h3>
-            <p><strong>{{ metrics.max_nesting }}</strong> levels of nesting detected.</p>
-            <p><small>Lower nesting improves readability — try flattening nested if/loops.</small></p>
+            <h3>Nesting Depth</h3>
+            <p>{{ metrics.max_nesting }} levels detected.</p>
+
+            <div class="tips-box">
+                <h4>Notes & Tips</h4>
+                <ul>
+                    <li><strong>Nesting</strong> means putting structures inside each other (like an if inside a loop).</li>
+                    <li>High nesting makes code harder to read — try to flatten logic or use early returns.</li>
+                </ul>
+            </div>
         </section>
 
+
+
+        <!-- SYNTAX ERRORS -->
         <section class="section">
             <h3>Syntax Errors</h3>
+
             {% if syntax.error %}
-                <p class="syntax-error">
-                    {{ syntax.error_type }} at line {{ syntax.line }}
-                </p>
+                <p class="syntax-error">{{ syntax.error_type }} at line {{ syntax.line }}</p>
                 <pre class="code-block">{{ syntax.msg }}</pre>
             {% else %}
                 <p>No syntax errors detected.</p>
             {% endif %}
         </section>
 
+
+
+        <!-- SUGGESTIONS -->
         <section class="section">
-            <h3>Suggestions and Recommendations</h3>
+            <h3>Suggestions</h3>
+
             {% if suggestions %}
-                <table class="detail-table">
-                    <tr>
-                        <th>Line</th>
-                        <th>Code</th>
-                        <th>Message</th>
-                    </tr>
-                    {% for s in suggestions %}
-                        <tr>
-                            <td>
-                                {% if s.line %}
-                                    {{ s.line }}
-                                {% else %}
-                                    –
-                                {% endif %}
-                            </td>
-                            <td>{{ s.code }}</td>
-                            <td>{{ s.message }}</td>
-                        </tr>
-                    {% endfor %}
-                </table>
+            <table class="detail-table">
+                <tr><th>Line</th><th>Code</th><th>Message</th></tr>
+                {% for s in suggestions %}
+                <tr>
+                    <td>{{ s.line if s.line else "–" }}</td>
+                    <td>{{ s.code }}</td>
+                    <td>{{ s.message }}</td>
+                </tr>
+                {% endfor %}
+            </table>
             {% else %}
-                <p>No style warnings or suggestions.</p>
+            <p>No style issues detected.</p>
             {% endif %}
-        </section>
 
-        <section class="section">
-            <h3>AST Node Overview</h3>
-            <p><small>This shows how your code is structured internally.</small></p>
-
-            {% if nodes %}
-                <div class="ast-box">
-                    {% for name, count in nodes.items() %}
-                        <div class="ast-item">
-                            <strong>{{ name }}</strong>: 
-                            <span class="ast-count">{{ count }}</span>
-                        </div>
-                    {% endfor %}
-                </div>
-            {% else %}
-                <p>No AST nodes to display.</p>
-            {% endif %}
-        </section>
-
-        <section class="section">
-            <h3>Overall Code Quality Score</h3>
-            <div class="quality-score-container">
-                <div class="quality-bar-wrapper">
-                    <div class="quality-bar {{ quality_color }}" style="width: {{ quality_percent }}%;">
-                    </div>
-                </div>
-                <div class="quality-label">{{ quality_label }} ({{ quality_percent }}%)</div>
+            <div class="tips-box">
+                <h4>Notes & Tips</h4>
+                <ul>
+                    <li>These suggestions come from automated style checks.</li>
+                    <li>They help you write cleaner, more consistent code.</li>
+                </ul>
             </div>
         </section>
 
-        <div class="buttons-row">
-            <a href="{{ url_for('download_report', filename=report_file) }}" class="upload-btn">
-                Download Report
-            </a>
 
-            <a href="{{ url_for('upload_page') }}" class="upload-btn secondary-btn">
-                Upload Another File
-            </a>
+
+        <!-- TOP 10 AST NODES -->
+        <section class="section">
+            <h3>Top 10 AST Nodes</h3>
+
+            <table class="detail-table">
+                <tr><th>Node</th><th>Count</th></tr>
+                {% for name, count in top_nodes.items() %}
+                <tr><td>{{ name }}</td><td>{{ count }}</td></tr>
+                {% endfor %}
+            </table>
+
+            <div class="tips-box">
+                <h4>Notes & Tips</h4>
+                <ul>
+                    <li><strong>AST Nodes</strong> represent how your code is built internally.</li>
+                    <li>High counts (like “If”, “Call”, “Assign”) may suggest heavy logic or repeated patterns.</li>
+                </ul>
+            </div>
+        </section>
+
+
+
+        <!-- AST INSIGHTS -->
+        <section class="section">
+            <h3>AST Node Insights</h3>
+
+            {% if ast_insights and ast_insights|length > 0 %}
+                <div class="ast-insight-box">
+                    {% for i in ast_insights %}
+                        <p>• {{ i }}</p>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>No unusual AST patterns detected — your code structure looks normal.</p>
+            {% endif %}
+
+            <div class="tips-box">
+                <h4>Notes & Tips</h4>
+                <ul>
+                    <li>Insights highlight only patterns that *may* need attention.</li>
+                    <li>If nothing appears here, your code structure is healthy and easy to follow.</li>
+                </ul>
+            </div>
+        </section>
+
+
+
+        <!-- QUALITY SCORE -->
+        <section class="section">
+            <h3>Overall Quality Score</h3>
+
+            {% set score = quality_percent %}
+
+            {% if score >= 80 %}
+                {% set quality_class = "quality-good" %}
+            {% elif score >= 50 %}
+                {% set quality_class = "quality-medium" %}
+            {% else %}
+                {% set quality_class = "quality-poor" %}
+            {% endif %}
+
+            <div class="quality-wrapper">
+                <div class="quality-track">
+                    <div class="quality-bar {{ quality_class }}" style="width: {{ score }}%;"></div>
+                </div>
+                <p class="quality-label">{{ quality_label }} ({{ score }}%)</p>
+            </div>
+        </section>
+
+
+        <!-- Buttons -->
+        <div class="buttons-row">
+            <a href="{{ url_for('download_report', filename=report_file) }}" class="upload-btn">Download Report</a>
+            <a href="{{ url_for('upload_page') }}" class="upload-btn secondary-btn">Upload Another File</a>
         </div>
 
     </div>
@@ -221,4 +269,7 @@
 
 </body>
 </html>
+
+
+
 

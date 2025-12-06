@@ -28,6 +28,7 @@ def upload_page():
 @app.route("/upload", methods=["POST"])
 def upload_file():
     file = request.files.get("file")
+
     if not file or file.filename == "" or not file.filename.endswith(".py"):
         return render_template("upload.html", error="Please upload a valid .py file.")
 
@@ -43,6 +44,9 @@ def upload_file():
     analyzer = CodeAnalyzer(code, file_path=file_path)
     analyzer.analyze()
 
+    # --------------------------
+    # METRICS
+    # --------------------------
     metrics = {
         "total_lines": analyzer.lines,
         "functions": analyzer.functions,
@@ -66,10 +70,12 @@ def upload_file():
         f"and {metrics['imports']} imports."
     )
 
-    # ===== QUALITY SCORE SYSTEM =====
+    # --------------------------
+    # QUALITY SCORE SYSTEM
+    # --------------------------
     score = 0
 
-    # Maintainability Score
+    # Maintainability score
     if metrics["maintainability"]:
         if metrics["maintainability"] >= 80:
             score += 40
@@ -80,7 +86,7 @@ def upload_file():
         else:
             score += 10
 
-    # Complexity Score (lower is better)
+    # Complexity score (lower is better)
     if metrics["avg_complexity"]:
         if metrics["avg_complexity"] <= 3:
             score += 40
@@ -91,7 +97,7 @@ def upload_file():
         else:
             score += 10
 
-    # Nesting Score (lower is better)
+    # Nesting score (lower is better)
     nesting = metrics["max_nesting"]
     if nesting <= 2:
         score += 20
@@ -114,7 +120,10 @@ def upload_file():
         quality_label = "Needs Improvement"
         quality_color = "red"
 
-    # ===== PACK RESULTS =====
+    # --------------------------
+    # RESULTS PACKAGE
+    # (✨ Added: top_nodes + ast_insights)
+    # --------------------------
     results = {
         "file_name": file.filename,
         "summary": summary,
@@ -125,13 +134,19 @@ def upload_file():
         "suggestions": analyzer.suggestions,
         "nodes": dict(analyzer.node_counts),
 
-        # new:
+        # NEW — AST Node Summary + Insights
+        "top_nodes": analyzer.top_nodes,
+        "ast_insights": analyzer.ast_insights,
+
+        # Quality Score
         "quality_percent": quality_percent,
         "quality_label": quality_label,
         "quality_color": quality_color,
     }
 
-    # ===== GENERATE HTML REPORT FOR DOWNLOAD =====
+    # --------------------------
+    # GENERATE REPORT FILE
+    # --------------------------
     report_name = f"{os.path.splitext(file.filename)[0]}_report.html"
     report_path = os.path.join(REPORT_FOLDER, report_name)
     generate_report(results, output_path=report_path)
@@ -149,3 +164,4 @@ def download_report(filename):
 
 if __name__ == "__main__":
     app.run(debug=True)
+
