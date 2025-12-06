@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Python Code Analysis Report – {{ file_name }}</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 30px; }
+        h1, h2, h3 { color: #30103d; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
+        th, td { border: 1px solid #ccc; padding: 8px; font-size: 14px; }
+        th { background: #f4f0f7; }
+        .syntax-error { color: #b30000; font-weight: bold; }
+        .bar-container { background: #f0f0f0; height: 10px; }
+        .bar { background: #7c3aed; height: 10px; }
+        .code-block { background: #f7f7f7; padding: 10px; border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+<h1>Python Code Analysis Report</h1>
+<p><strong>File:</strong> {{ file_name }}</p>
+
+<h2>Description</h2>
+<p>{{ summary }}</p>
+
+<h2>Summary Metrics</h2>
+<table>
+    <tr><th>Metric</th><th>Value</th></tr>
+    <tr><td>Total Lines</td><td>{{ metrics.total_lines }}</td></tr>
+    <tr><td>Functions</td><td>{{ metrics.functions }}</td></tr>
+    <tr><td>Classes</td><td>{{ metrics.classes }}</td></tr>
+    <tr><td>Imports</td><td>{{ metrics.imports }}</td></tr>
+    <tr>
+        <td>Average Complexity</td>
+        <td>
+            {% if metrics.avg_complexity is not none %}
+                {{ "%.2f"|format(metrics.avg_complexity) }}
+            {% else %}
+                N/A
+            {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <td>Maintainability Index</td>
+        <td>
+            {% if metrics.maintainability is not none %}
+                {{ "%.2f"|format(metrics.maintainability) }}
+            {% else %}
+                N/A
+            {% endif %}
+        </td>
+    </tr>
+    <tr><td>Max Nesting Depth</td><td>{{ metrics.max_nesting }}</td></tr>
+</table>
+
+<h2>Class Structure</h2>
+{% if classes %}
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Start Line</th>
+        <th>End Line</th>
+        <th>LOC</th>
+        <th>Methods</th>
+    </tr>
+    {% for c in classes %}
+        <tr>
+            <td>{{ c.name }}</td>
+            <td>{{ c.line }}</td>
+            <td>{{ c.end_line }}</td>
+            <td>{{ c.loc }}</td>
+            <td>{{ c.methods_count }}</td>
+        </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No classes found.</p>
+{% endif %}
+
+<h2>Function Structure</h2>
+{% if functions %}
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Start Line</th>
+        <th>End Line</th>
+        <th>LOC</th>
+        <th>Parameters</th>
+        <th>Complexity</th>
+    </tr>
+    {% for f in functions %}
+        <tr>
+            <td>{{ f.name }}</td>
+            <td>{{ f.line }}</td>
+            <td>{{ f.end_line }}</td>
+            <td>{{ f.loc }}</td>
+            <td>
+                {% if f.args %}
+                    {{ f.args|join(", ") }}
+                {% else %}
+                    –
+                {% endif %}
+            </td>
+            <td>
+                {% if f.complexity is not none %}
+                    {{ f.complexity }}
+                {% else %}
+                    N/A
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No functions found.</p>
+{% endif %}
+
+<h2>Syntax Check</h2>
+{% if syntax.error %}
+<p class="syntax-error">{{ syntax.error_type }} at line {{ syntax.line }}</p>
+<pre class="code-block">{{ syntax.msg }}</pre>
+{% else %}
+<p>No syntax errors detected.</p>
+{% endif %}
+
+<h2>Suggestions and Recommendations</h2>
+{% if suggestions %}
+<table>
+    <tr>
+        <th>Line</th>
+        <th>Code</th>
+        <th>Message</th>
+    </tr>
+    {% for s in suggestions %}
+        <tr>
+            <td>{% if s.line %}{{ s.line }}{% else %}–{% endif %}</td>
+            <td>{{ s.code }}</td>
+            <td>{{ s.message }}</td>
+        </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No style warnings or suggestions.</p>
+{% endif %}
+
+<h2>AST Node Distribution</h2>
+{% if nodes %}
+<table>
+    <tr>
+        <th>Node Type</th>
+        <th>Count</th>
+        <th>Diagram</th>
+    </tr>
+    {% for name, count in nodes.items() %}
+        <tr>
+            <td>{{ name }}</td>
+            <td>{{ count }}</td>
+            <td>
+                <div class="bar-container">
+                    <div class="bar" style="width: {{ 40 + count * 15 }}px;"></div>
+                </div>
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No nodes found.</p>
+{% endif %}
+
+</body>
+</html>

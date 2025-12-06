@@ -3,9 +3,9 @@ body {
     padding: 0;
     font-family: "Segoe UI", sans-serif;
     background: #ffffff;
-    background-image: none
 }
 
+/* HEADER */
 header {
     text-align: center;
     padding: 35px 20px;
@@ -20,37 +20,107 @@ header h1 {
     font-weight: 700;
 }
 
-
+/* PAGE LAYOUT */
 .container {
     display: flex;
     justify-content: center;
-    margin-top: 150px;
+    padding: 60px 20px;
 }
-
 
 .card {
     background: rgb(243, 233, 249);
-    padding: 40px 45px;
-    width: 450px;
+    padding: 40px;
+    width: 900px;
     border-radius: 20px;
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
-    text-align: center;
-    transition: 0.3s;
     border: 1px solid #eaeaea;
 }
 
-.card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.15);
+.section {
+    margin-top: 40px;
 }
 
-.card h2 {
-    margin: 0 0 25px;
+.section-title {
+    text-align: center;
+    font-size: 26px;
+    margin-bottom: 25px;
     color: #3b3b3b;
-    font-size: 23px;
 }
 
+.file-name {
+    font-size: 16px;
+    color: #4a4a4a;
+    text-align: center;
+}
 
+/* TABLES */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+th, td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background: #d8c4e2;
+    font-weight: bold;
+}
+
+tr:hover {
+    background: #f4edf7;
+}
+
+/* BUTTONS */
+.upload-btn {
+    display: inline-block;
+    padding: 12px 18px;
+    background: #765688;
+    color: #fff;
+    border-radius: 10px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.25s;
+    text-align: center;
+}
+
+.upload-btn:hover {
+    background: #5a386e;
+}
+
+.secondary-btn {
+    background: #b59fc8;
+}
+
+.secondary-btn:hover {
+    background: #9a83af;
+}
+
+.buttons-row {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+/* DIAGRAM BARS */
+.bar-container {
+    height: 14px;
+    background: #eee;
+    border-radius: 8px;
+    width: 100%;
+}
+
+.bar {
+    height: 100%;
+    background: #765688;
+    border-radius: 8px;
+}
+
+/* FILE UPLOAD PAGE */
 .file-label {
     display: block;
     background: #765688;
@@ -61,6 +131,7 @@ header h1 {
     margin-bottom: 18px;
     transition: 0.25s;
     font-weight: 600;
+    text-align: center;
 }
 
 .file-label:hover {
@@ -71,29 +142,84 @@ input[type="file"] {
     display: none;
 }
 
-
 .filename {
     margin: 10px 0 20px;
     font-size: 14px;
     color: #555;
     font-style: italic;
+    text-align: center;
+}
+
+.error-message {
+    color: red;
+    text-align: center;
+    margin-top: 10px;
 }
 
 
-.upload-btn {
+/* ------------------------------------------------------ */
+/* NEW: QUALITY SCORE (Green / Yellow / Red Gauge Style) */
+/* ------------------------------------------------------ */
+
+.quality-score-container {
+    margin-top: 25px;
     width: 100%;
-    padding: 14px;
-    background: #765688;
-    color: #fff;
-    border: none;
+    text-align: center;
+}
+
+.quality-bar-wrapper {
+    width: 80%;
+    height: 22px;
+    margin: 0 auto;
+    background: #eee;
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.quality-bar {
+    height: 100%;
+    border-radius: 14px;
+    transition: width 0.4s ease;
+}
+
+/* Colors based on score */
+.quality-green {
+    background: #4CAF50; /* green */
+}
+
+.quality-yellow {
+    background: #F7C843; /* yellow */
+}
+
+.quality-red {
+    background: #E53935; /* red */
+}
+
+.quality-label {
+    margin-top: 10px;
     font-size: 16px;
     font-weight: bold;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: 0.25s;
-    letter-spacing: 0.3px;
 }
 
-.upload-btn:hover {
-    background: #5a386e;
+
+/* ------------------------------------------------------ */
+/* NEW: Improved AST Visualization                       */
+/* ------------------------------------------------------ */
+
+.ast-box {
+    margin-top: 15px;
+    padding: 14px;
+    background: #f6f1fa;
+    border-radius: 12px;
+    border-left: 5px solid #765688;
+}
+
+.ast-item {
+    padding: 6px 0;
+    font-size: 15px;
+}
+
+.ast-count {
+    font-weight: bold;
+    color: #5a386e;
 }

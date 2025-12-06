@@ -1,9 +1,9 @@
 import ast
 
 class ASTParser:
-    def __init__(self,code):
+    def __init__(self, code):
         self.code = code
-        self.tree = None # placeholder for the AST
+        self.tree = None
 
     def parse(self):
         self.tree = ast.parse(self.code)
