@@ -50,8 +50,15 @@
             {% endif %}
         </td>
     </tr>
-    <tr><td>Max Nesting Depth</td><td>{{ metrics.max_nesting }}</td></tr>
 </table>
+<div class="tips-box">
+                <h4>Notes & Tips</h4>
+                <ul>
+                    <li><strong>Average Complexity:</strong> lower = easier to read. High complexity usually means too many conditions or long logic.</li>
+                    <li><strong>Maintainability Index:</strong> higher = cleaner code. Values above 70 are considered healthy.</li>
+                    <li><strong>Total Lines:</strong> a large file isn't bad, but shorter focused files are usually easier to maintain.</li>
+                </ul>
+            </div>
 
 <h2>Class Structure</h2>
 {% if classes %}
@@ -76,6 +83,13 @@
 {% else %}
 <p>No classes found.</p>
 {% endif %}
+<div class="tips-box">
+                <h4>Notes & Tips</h4>
+                <ul>
+                    <li><strong>Lines:</strong> number of lines inside the class. Large classes can sometimes be split into smaller logical pieces.</li>
+                    <li><strong>Methods Count:</strong> more methods = more responsibility. Classes should be focused and not do too many things.</li>
+                </ul>
+            </div>
 
 <h2>Function Structure</h2>
 {% if functions %}
@@ -89,31 +103,48 @@
         <th>Complexity</th>
     </tr>
     {% for f in functions %}
-        <tr>
-            <td>{{ f.name }}</td>
-            <td>{{ f.line }}</td>
-            <td>{{ f.end_line }}</td>
-            <td>{{ f.loc }}</td>
-            <td>
-                {% if f.args %}
-                    {{ f.args|join(", ") }}
-                {% else %}
-                    –
-                {% endif %}
-            </td>
-            <td>
-                {% if f.complexity is not none %}
-                    {{ f.complexity }}
-                {% else %}
-                    N/A
-                {% endif %}
-            </td>
-        </tr>
+    <tr>
+        <td>{{ f.name }}</td>
+        <td>{{ f.line }}</td>
+        <td>{{ f.end_line }}</td>
+        <td>{{ f.loc }}</td>
+        <td>{{ f.args|join(", ") if f.args else "–" }}</td>
+        <td>{{ f.complexity if f.complexity else "N/A" }}</td>
+    </tr>
     {% endfor %}
 </table>
 {% else %}
 <p>No functions found.</p>
 {% endif %}
+
+<div class="tips-box">
+    <h4>Notes & Tips</h4>
+    <ul>
+        <li><strong>Shorter functions</strong> are usually easier to understand and reuse.</li>
+        <li><strong>Complexity</strong> increases when you have many if/elif or loops. Try splitting logic when possible.</li>
+        <li><strong>Parameters:</strong> functions with too many parameters can be harder to work with.</li>
+    </ul>
+</div>
+
+<!-- Nesting Depth separate section -->
+<h2>Nesting Depth</h2>
+{% if metrics.max_nesting is not none %}
+<section class="section">
+    <h3>Nesting Depth</h3>
+    <p>{{ metrics.max_nesting }} levels detected.</p>
+
+    <div class="tips-box">
+        <h4>Notes & Tips</h4>
+        <ul>
+            <li><strong>Nesting</strong> means putting structures inside each other (like an if inside a loop).</li>
+            <li>High nesting makes code harder to read — try to flatten logic or use early returns.</li>
+        </ul>
+    </div>
+</section>
+{% else %}
+<p>Nesting depth not available.</p>
+{% endif %}
+
 
 <h2>Syntax Check</h2>
 {% if syntax.error %}
@@ -123,7 +154,8 @@
 <p>No syntax errors detected.</p>
 {% endif %}
 
-<h2>Suggestions and Recommendations</h2>
+
+<h2>Suggestions</h2>
 {% if suggestions %}
 <table>
     <tr>
@@ -140,32 +172,79 @@
     {% endfor %}
 </table>
 {% else %}
-<p>No style warnings or suggestions.</p>
+<p>No style issues detected.</p>
 {% endif %}
+<div class="tips-box">
+                <h4>Notes & Tips</h4>
+                <ul>
+                    <li>These suggestions come from automated style checks.</li>
+                    <li>They help you write cleaner, more consistent code.</li>
+                </ul>
+            </div>
 
-<h2>AST Node Distribution</h2>
-{% if nodes %}
+
+<h2>Top 10 AST Nodes</h2>
+
+{% if top_nodes %}
 <table>
     <tr>
-        <th>Node Type</th>
+        <th>Node</th>
         <th>Count</th>
-        <th>Diagram</th>
     </tr>
-    {% for name, count in nodes.items() %}
+    {% for name, count in top_nodes.items() %}
         <tr>
             <td>{{ name }}</td>
             <td>{{ count }}</td>
-            <td>
-                <div class="bar-container">
-                    <div class="bar" style="width: {{ 40 + count * 15 }}px;"></div>
-                </div>
-            </td>
         </tr>
     {% endfor %}
 </table>
+
+<div class="tips-box">
+    <h4>Notes & Tips</h4>
+    <ul>
+        <li><strong>AST Nodes</strong> represent how your code is built internally.</li>
+        <li>High counts (like “If”, “Call”, “Assign”) may suggest heavy logic or repeated patterns.</li>
+    </ul>
+</div>
 {% else %}
 <p>No nodes found.</p>
 {% endif %}
+
+<h2>AST Node Insights</h2>
+
+{% if ast_insights and ast_insights|length > 0 %}
+    <div class="ast-insight-box">
+        {% for i in ast_insights %}
+            <p>• {{ i }}</p>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>No unusual AST patterns detected — your code structure looks normal.</p>
+{% endif %}
+
+<div class="tips-box">
+    <h4>Notes & Tips</h4>
+    <ul>
+        <li>Insights highlight only patterns that *may* need attention.</li>
+        <li>If nothing appears here, your code structure is healthy and easy to follow.</li>
+    </ul>
+</div>
+<h2>Overall Quality Score</h2>
+{% set score = quality_percent %}
+{% if score >= 80 %}
+    {% set quality_class = "quality-good" %}
+{% elif score >= 50 %}
+    {% set quality_class = "quality-medium" %}
+{% else %}
+    {% set quality_class = "quality-poor" %}
+{% endif %}
+
+<div class="quality-wrapper">
+    <div class="quality-track">
+        <div class="quality-bar {{ quality_class }}" style="width: {{ score }}%;"></div>
+    </div>
+    <p class="quality-label">{{ quality_label }} ({{ score }}%)</p>
+</div>
 
 </body>
 </html>

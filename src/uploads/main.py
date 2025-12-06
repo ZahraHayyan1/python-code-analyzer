@@ -1,32 +1,14 @@
-import math
 import os
+from dotenv import load_dotenv
+from langchain_anthropic import ChatAnthropic
 
-class Calculator:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
+load_dotenv()
 
-    def add(self):
-        return self.x + self.y
+api_key = os.getenv("ANTHROPIC_API_KEY")
+if not api_key:
+    raise ValueError("Anthropic API key not found. Set ANTHROPIC_API_KEY in .env")
 
-    def multiply(self):
-        return self.x * self.y
+llm = ChatAnthropic(model="claude-3-5-sonnet-20241022", anthropic_api_key=api_key)
 
-
-def greet(name):
-    print(f"Hello {name}")
-
-def nested_example(n):
-    for i in range(n):
-        if i % 2 == 0:
-            print("Even")
-        else:
-            print("Odd")
-
-if __name__ == "__main__":
-    c = Calculator(3, 5)
-    print(c.add())
-    print(c.multiply())
-
-    greet("Iman")
-    nested_example(5)
+response = llm.invoke("what is the meaning of life?")
+print(response)
