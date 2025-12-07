@@ -51,9 +51,8 @@
             <div class="tips-box">
                 <h4>Notes & Tips</h4>
                 <ul>
-                    <li><strong>Average Complexity:</strong> lower = easier to read. High complexity usually means too many conditions or long logic.</li>
-                    <li><strong>Maintainability Index:</strong> higher = cleaner code. Values above 70 are considered healthy.</li>
-                    <li><strong>Total Lines:</strong> a large file isn't bad, but shorter focused files are usually easier to maintain.</li>
+                    <li><strong>Average Complexity:</strong> lower = easier to read.</li>
+                    <li><strong>Maintainability Index:</strong> higher = cleaner code.</li>
                 </ul>
             </div>
         </section>
@@ -84,47 +83,67 @@
             <div class="tips-box">
                 <h4>Notes & Tips</h4>
                 <ul>
-                    <li><strong>Lines:</strong> number of lines inside the class. Large classes can sometimes be split into smaller logical pieces.</li>
-                    <li><strong>Methods Count:</strong> more methods = more responsibility. Classes should be focused and not do too many things.</li>
+                    <li>Classes with many methods are harder to maintain.</li>
                 </ul>
             </div>
         </section>
 
 
 
-        <!-- FUNCTION STRUCTURE -->
-        <section class="section">
-            <h3>Function Structure</h3>
+       <!-- FUNCTION STRUCTURE -->
+<section class="section">
+    <h3>Function Structure</h3>
 
-            {% if functions %}
-            <table class="detail-table">
-                <tr>
-                    <th>Name</th><th>Start</th><th>End</th><th>Lines</th><th>Params</th><th>Complexity</th>
-                </tr>
-                {% for f in functions %}
-                <tr>
-                    <td>{{ f.name }}</td>
-                    <td>{{ f.line }}</td>
-                    <td>{{ f.end_line }}</td>
-                    <td>{{ f.loc }}</td>
-                    <td>{{ f.args|join(", ") if f.args else "–" }}</td>
-                    <td>{{ f.complexity if f.complexity else "N/A" }}</td>
-                </tr>
-                {% endfor %}
-            </table>
-            {% else %}
-            <p>No functions found.</p>
-            {% endif %}
+    {% if functions %}
+    <table class="detail-table">
+        <tr>
+            <th>Name</th>
+            <th>Start</th>
+            <th>End</th>
+            <th>Lines</th>
+            <th>Params</th>
+            <th>Complexity</th>
+            <th>Quality</th>
+        </tr>
 
-            <div class="tips-box">
-                <h4>Notes & Tips</h4>
-                <ul>
-                    <li><strong>Shorter functions</strong> are usually easier to understand and reuse.</li>
-                    <li><strong>Complexity</strong> increases when you have many if/elif or loops. Try splitting logic when possible.</li>
-                    <li><strong>Parameters:</strong> functions with too many parameters can be harder to work with.</li>
-                </ul>
-            </div>
-        </section>
+        {% for f in functions %}
+        <tr>
+            <td>{{ f.name }}</td>
+            <td>{{ f.line }}</td>
+            <td>{{ f.end_line }}</td>
+            <td>{{ f.loc }}</td>
+            <td>{{ f.args|join(", ") if f.args else "–" }}</td>
+            <td>{{ f.complexity if f.complexity else "N/A" }}</td>
+
+            <!-- QUALITY BAR -->
+            <td>
+                <div class="quality-bar-container">
+                    {% if f.quality >= 80 %}
+                        <div class="quality-bar-fill good" style="width: {{ f.quality }}%;"></div>
+                    {% elif f.quality >= 50 %}
+                        <div class="quality-bar-fill medium" style="width: {{ f.quality }}%;"></div>
+                    {% else %}
+                        <div class="quality-bar-fill poor" style="width: {{ f.quality }}%;"></div>
+                    {% endif %}
+                </div>
+                <div class="quality-percent-text">{{ f.quality }}%</div>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <p>No functions found.</p>
+    {% endif %}
+
+    <div class="tips-box">
+        <h4>Notes & Tips</h4>
+        <ul>
+            <li><strong>Function Quality</strong> is a combined score of length, params, nesting, and complexity.</li>
+            <li>Green bars = excellent, yellow = moderate, red = needs improvement.</li>
+        </ul>
+    </div>
+</section>
+
 
 
 
@@ -136,8 +155,8 @@
             <div class="tips-box">
                 <h4>Notes & Tips</h4>
                 <ul>
-                    <li><strong>Nesting</strong> means putting structures inside each other (like an if inside a loop).</li>
-                    <li>High nesting makes code harder to read — try to flatten logic or use early returns.</li>
+                    <li>High nesting makes logic harder to follow.</li>
+                    <li>Try using early returns or flattening.</li>
                 </ul>
             </div>
         </section>
@@ -181,14 +200,14 @@
                 <h4>Notes & Tips</h4>
                 <ul>
                     <li>These suggestions come from automated style checks.</li>
-                    <li>They help you write cleaner, more consistent code.</li>
+                    <li>You don’t have to fix every warning — focus on repeated ones.</li>
                 </ul>
             </div>
         </section>
 
 
 
-        <!-- TOP 10 AST NODES -->
+        <!-- TOP AST NODES -->
         <section class="section">
             <h3>Top 10 AST Nodes</h3>
 
@@ -202,8 +221,8 @@
             <div class="tips-box">
                 <h4>Notes & Tips</h4>
                 <ul>
-                    <li><strong>AST Nodes</strong> represent how your code is built internally.</li>
-                    <li>High counts (like “If”, “Call”, “Assign”) may suggest heavy logic or repeated patterns.</li>
+                    <li>AST nodes describe how Python interprets your code internally.</li>
+                    <li>High counts may indicate repeated patterns or complex logic.</li>
                 </ul>
             </div>
         </section>
@@ -221,16 +240,8 @@
                     {% endfor %}
                 </div>
             {% else %}
-                <p>No unusual AST patterns detected — your code structure looks normal.</p>
+                <p>No unusual AST patterns detected</p>
             {% endif %}
-
-            <div class="tips-box">
-                <h4>Notes & Tips</h4>
-                <ul>
-                    <li>Insights highlight only patterns that *may* need attention.</li>
-                    <li>If nothing appears here, your code structure is healthy and easy to follow.</li>
-                </ul>
-            </div>
         </section>
 
 
@@ -269,6 +280,7 @@
 
 </body>
 </html>
+
 
 
 

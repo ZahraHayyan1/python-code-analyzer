@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Python Code Analysis Report – messy_logic.py</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 30px; }
+        h1, h2, h3 { color: #30103d; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
+        th, td { border: 1px solid #ccc; padding: 8px; font-size: 14px; }
+        th { background: #f4f0f7; }
+        .syntax-error { color: #b30000; font-weight: bold; }
+        .bar-container { background: #f0f0f0; height: 10px; }
+        .bar { background: #7c3aed; height: 10px; }
+        .code-block { background: #f7f7f7; padding: 10px; border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+<h1>Python Code Analysis Report</h1>
+<p><strong>File:</strong> messy_logic.py</p>
+
+<h2>Description</h2>
+<p>This Python file contains 22 lines, 0 classes, 1 functions, and 0 imports.</p>
+
+<h2>Summary Metrics</h2>
+<table>
+    <tr><th>Metric</th><th>Value</th></tr>
+    <tr><td>Total Lines</td><td>22</td></tr>
+    <tr><td>Functions</td><td>1</td></tr>
+    <tr><td>Classes</td><td>0</td></tr>
+    <tr><td>Imports</td><td>0</td></tr>
+    <tr>
+        <td>Average Complexity</td>
+        <td>
+            
+                9.00
+            
+        </td>
+    </tr>
+    <tr>
+        <td>Maintainability Index</td>
+        <td>
+            
+                53.91
+            
+        </td>
+    </tr>
+    <tr><td>Max Nesting Depth</td><td>6</td></tr>
+</table>
+
+<h2>Class Structure</h2>
+
+<p>No classes found.</p>
+
+
+<h2>Function Structure</h2>
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Start Line</th>
+        <th>End Line</th>
+        <th>LOC</th>
+        <th>Parameters</th>
+        <th>Complexity</th>
+    </tr>
+    
+        <tr>
+            <td>process</td>
+            <td>1</td>
+            <td>22</td>
+            <td>22</td>
+            <td>
+                
+                    values
+                
+            </td>
+            <td>
+                
+                    9
+                
+            </td>
+        </tr>
+    
+</table>
+
+
+<h2>Syntax Check</h2>
+
+<p>No syntax errors detected.</p>
+
+
+<h2>Suggestions and Recommendations</h2>
+
+<p>No style warnings or suggestions.</p>
+
+
+<h2>AST Node Distribution</h2>
+
+<table>
+    <tr>
+        <th>Node Type</th>
+        <th>Count</th>
+        <th>Diagram</th>
+    </tr>
+    
+        <tr>
+            <td>Module</td>
+            <td>1</td>
+            <td>
+                <div class="bar-container">
+                    <div class="bar" style="width: 55px;"></div>
+                </div>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>FunctionDef</td>
+            <td>1</td>
+            <td>
+                <div class="bar-container">
+                    <div class="bar" style="width: 55px;"></div>
+                </div>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>arguments</td>
+            <td>1</td>
+            <td>
+                <div class="bar-container">
+                    <div class="bar" style="width: 55px;"></div>
+                </div>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>arg</td>
+            <td>1</td>
+            <td>
+                <div class="bar-container">
+                    <div class="bar" style="width: 55px;"></div>
+                </div>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>Assign</td>
+            <td>1</td>
+            <td>
+                <div class="bar-container">
+                    <div class="bar" style="width: 55px;"></div>
+                </div>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>Name</td>
+            <td>24</td>
+            <td>
+                <div class="bar-container">
+                    <div class="bar" style="width: 400px;"></div>
+                </div>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>Store</td>
+            <td>3</td>
+            <td>
+                <div class="bar-container">
+                    <div class="bar" style="width: 85px;"></div>
+                </div>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>List</td>
+            <td>1</td>
+            <td>
+                <div class="bar-container">
+                    <div class="bar" style="width: 55px;"></div>
+                </div>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>Load</td>
+            <td>28</td>
+            <td>
+                <div class="bar-container">
+                    <div class="bar" style="width: 460px;"></div>
+                </div>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>For</td>
+            <td>2</td>
+            <td>
+                <div class="bar-container">
+                    <div class="bar" style="width: 70px;"></div>
+                </div>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>If</td>
+            <td>6</td>
+            <td>
+                <div class="bar-container">
+                    <div class="bar" style="width: 130px;"></div>
+                </div>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>Compare</td>
+            <td>6</td>
+            <td>
+                <div class="bar-container">
+                    <div class="bar" style="width: 130px;"></div>
+                </div>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>BinOp</td>
+            <td>7</td>
+            <td>
+                <div class="bar-container">
+                    <div class="bar" style="width: 145px;"></div>
+                </div>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>Mod</td>
+            <td>3</td>
+            <td>
+                <div class="bar-container">
+                    <div class="bar" style="width: 85px;"></div>
+                </div>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>Constant</td>
+            <td>14</td>
+            <td>
+                <div class="bar-container">
+                    <div class="bar" style="width: 250px;"></div>
+                </div>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>Eq</td>
+            <td>4</td>
+            <td>
+                <div class="bar-container">
+                    <div class="bar" style="width: 100px;"></div>
+                </div>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>Gt</td>
+            <td>1</td>
+            <td>
+                <div class="bar-container">
+                    <div class="bar" style="width: 55px;"></div>
+                </div>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>Lt</td>
+            <td>1</td>
+            <td>
+                <div class="bar-container">
+                    <div class="bar" style="width: 55px;"></div>
+                </div>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>Expr</td>
+            <td>6</td>
+            <td>
+                <div class="bar-container">
+                    <div class="bar" style="width: 130px;"></div>
+                </div>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>Call</td>
+            <td>7</td>
+            <td>
+                <div class="bar-container">
+                    <div class="bar" style="width: 145px;"></div>
+                </div>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>Attribute</td>
+            <td>6</td>
+            <td>
+                <div class="bar-container">
+                    <div class="bar" style="width: 130px;"></div>
+                </div>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>Mult</td>
+            <td>2</td>
+            <td>
+                <div class="bar-container">
+                    <div class="bar" style="width: 70px;"></div>
+                </div>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>Sub</td>
+            <td>1</td>
+            <td>
+                <div class="bar-container">
+                    <div class="bar" style="width: 55px;"></div>
+                </div>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>Add</td>
+            <td>1</td>
+            <td>
+                <div class="bar-container">
+                    <div class="bar" style="width: 55px;"></div>
+                </div>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>Return</td>
+            <td>1</td>
+            <td>
+                <div class="bar-container">
+                    <div class="bar" style="width: 55px;"></div>
+                </div>
+            </td>
+        </tr>
+    
+</table>
+
+
+</body>
+</html>
