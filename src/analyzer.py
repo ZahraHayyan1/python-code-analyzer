@@ -14,6 +14,44 @@ except ImportError:
     lint = None
 
 
+def generate_hint(message: str) -> str:
+    msg = message.lower()
+    if "unexpected eof" in msg or "unexpected end of file" in msg:
+        return "You may have missed closing a parenthesis, quote, or block."
+    if "invalid syntax" in msg:
+        return "Check for missing colon, parenthesis, or incorrect indentation."
+    if "expected ':'" in msg:
+        return "Add a colon ':' at the end of the statement."
+    if "indentation" in msg:
+        return "Verify indentation levels."
+    if "unmatched" in msg:
+        return "A bracket or parenthesis is not closed."
+    if "cannot assign to" in msg:
+        return "You may have used '=' instead of '==' or assigned to an invalid expression."
+    return "Fix the syntax on this line according to the error."
+
+
+def check_syntax(code: str):
+    errors = []
+    try:
+        ast.parse(code)
+        return {"has_error": False, "error_count": 0, "errors": []}
+    except SyntaxError as e:
+        one_error = {
+            "line": e.lineno,
+            "column": e.offset,
+            "type": e.__class__.__name__,
+            "message": e.msg,
+            "hint": generate_hint(e.msg)
+        }
+        errors.append(one_error)
+        return {
+            "has_error": True,
+            "error_count": len(errors),
+            "errors": errors
+        }
+
+
 class CodeAnalyzer(ast.NodeVisitor):
     def __init__(self, code, file_path=None):
         self.code = code
@@ -25,10 +63,8 @@ class CodeAnalyzer(ast.NodeVisitor):
         self.classes = 0
         self.imports = 0
 
-        self.error = None
-        self.error_type = None
-        self.error_line = None
-        self.error_msg = None
+        self.syntax_errors = []
+        self.suggestions = []
 
         self.nodes = []
         self.node_counts = collections.Counter()
@@ -39,23 +75,20 @@ class CodeAnalyzer(ast.NodeVisitor):
 
         self.function_details = []
         self.class_details = []
-        self.suggestions = []
-
         self.complexity_map = {}
 
         self.top_nodes = {}
         self.ast_insights = []
 
-    # -----------------------------------------------------
-
     def analyze(self):
+        syntax = check_syntax(self.code)
+        if syntax["has_error"]:
+            self.syntax_errors = syntax["errors"]
+            return
+
         try:
             self.tree = ast.parse(self.code)
-        except SyntaxError as e:
-            self.error = e
-            self.error_type = e.msg
-            self.error_line = e.lineno
-            self.error_msg = e.text
+        except SyntaxError:
             return
 
         self.lines = len(self.code.splitlines())
@@ -68,12 +101,10 @@ class CodeAnalyzer(ast.NodeVisitor):
         self._extract_top_nodes()
         self._generate_ast_insights()
 
-    # -----------------------------------------------------
-
     def visit(self, node):
-        node_type = type(node).__name__
-        self.nodes.append(node_type)
-        self.node_counts[node_type] += 1
+        t = type(node).__name__
+        self.nodes.append(t)
+        self.node_counts[t] += 1
         super().visit(node)
 
     def visit_FunctionDef(self, node):
@@ -94,46 +125,31 @@ class CodeAnalyzer(ast.NodeVisitor):
     def visit_ImportFrom(self, node):
         self.imports += 1
 
-    # -----------------------------------------------------
-
     def _compute_nesting(self, node, depth):
-        block_types = (
+        blocks = (
             ast.If, ast.For, ast.While, ast.With, ast.Try,
             ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef
         )
-
-        if isinstance(node, block_types):
+        if isinstance(node, blocks):
             depth += 1
             self.max_nesting = max(self.max_nesting, depth)
-
         for child in ast.iter_child_nodes(node):
             self._compute_nesting(child, depth)
 
-    # -----------------------------------------------------
-    # Local nesting per function
-    # -----------------------------------------------------
-
-    def _compute_local_nesting(self, fn_node):
+    def _compute_local_nesting(self, fn):
         max_depth = 0
-
-        def walk(node, depth):
+        def walk(n, d):
             nonlocal max_depth
-            block_types = (ast.If, ast.For, ast.While, ast.With, ast.Try)
-            if isinstance(node, block_types):
-                depth += 1
-                max_depth = max(max_depth, depth)
-            for child in ast.iter_child_nodes(node):
-                walk(child, depth)
-
-        walk(fn_node, 0)
+            blocks = (ast.If, ast.For, ast.While, ast.With, ast.Try)
+            if isinstance(n, blocks):
+                d += 1
+                max_depth = max(max_depth, d)
+            for c in ast.iter_child_nodes(n):
+                walk(c, d)
+        walk(fn, 0)
         return max_depth
 
-    # -----------------------------------------------------
-    # Score each function individually
-    # -----------------------------------------------------
-
     def _score_function(self, complexity, loc, params, nesting):
-        # Complexity (40%)
         if complexity is None:
             cx = 20
         elif complexity <= 3:
@@ -145,7 +161,6 @@ class CodeAnalyzer(ast.NodeVisitor):
         else:
             cx = 10
 
-        # Length (25%)
         if loc <= 10:
             ln = 25
         elif loc <= 20:
@@ -155,7 +170,6 @@ class CodeAnalyzer(ast.NodeVisitor):
         else:
             ln = 5
 
-        # Parameters (20%)
         if params <= 2:
             pm = 20
         elif params <= 4:
@@ -163,7 +177,6 @@ class CodeAnalyzer(ast.NodeVisitor):
         else:
             pm = 6
 
-        # Nesting (15%)
         if nesting <= 2:
             ns = 15
         elif nesting <= 4:
@@ -173,8 +186,6 @@ class CodeAnalyzer(ast.NodeVisitor):
 
         return cx + ln + pm + ns
 
-    # -----------------------------------------------------
-
     def _analyze_complexity(self):
         if cc_visit:
             try:
@@ -183,113 +194,86 @@ class CodeAnalyzer(ast.NodeVisitor):
                 for b in blocks:
                     values.append(b.complexity)
                     self.complexity_map[(b.name, b.lineno)] = b.complexity
-
                 if values:
                     self.avg_complexity = sum(values) / len(values)
-            except Exception:
+            except:
                 pass
 
         if mi_visit:
             try:
                 self.maintainability = mi_visit(self.code, False)
-            except Exception:
+            except:
                 pass
-
-    # -----------------------------------------------------
 
     def _build_details(self):
         if self.tree is None:
             return
-
         functions = []
         classes = []
-
         for node in ast.walk(self.tree):
             if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
-                end_line = getattr(node, "end_lineno", node.lineno)
-                loc = end_line - node.lineno + 1
+                end = getattr(node, "end_lineno", node.lineno)
+                loc = end - node.lineno + 1
                 args = [a.arg for a in node.args.args]
-                complexity = self.complexity_map.get((node.name, node.lineno))
-                nesting = self._compute_local_nesting(node)
-                quality = self._score_function(complexity, loc, len(args), nesting)
-
+                c = self.complexity_map.get((node.name, node.lineno))
+                nest = self._compute_local_nesting(node)
+                q = self._score_function(c, loc, len(args), nest)
                 functions.append({
                     "name": node.name,
                     "line": node.lineno,
-                    "end_line": end_line,
+                    "end_line": end,
                     "loc": loc,
                     "args": args,
-                    "complexity": complexity,
-                    "quality": quality,
+                    "complexity": c,
+                    "quality": q
                 })
-
             if isinstance(node, ast.ClassDef):
-                end_line = getattr(node, "end_lineno", node.lineno)
-                loc = end_line - node.lineno + 1
-                methods = [
-                    n for n in node.body if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef))
+                end = getattr(node, "end_lineno", node.lineno)
+                loc = end - node.lineno + 1
+                m = [
+                    n for n in node.body
+                    if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef))
                 ]
                 classes.append({
                     "name": node.name,
                     "line": node.lineno,
-                    "end_line": end_line,
+                    "end_line": end,
                     "loc": loc,
-                    "methods_count": len(methods),
+                    "methods_count": len(m)
                 })
-
         self.function_details = sorted(functions, key=lambda x: x["line"])
         self.class_details = sorted(classes, key=lambda x: x["line"])
 
-    # -----------------------------------------------------
-    # FIXED & FINAL pylint analyzer
-    # -----------------------------------------------------
-
     def _analyze_pylint(self):
         self.suggestions = []
-
         if lint is None or not self.file_path:
             return
-
         try:
             stdout, stderr = lint.py_run(
                 f"{self.file_path} --score=no --output-format=text",
                 return_std=True
             )
-
-            # 🔥 Combine BOTH stdout + stderr
             text = (stdout.getvalue() or "") + "\n" + (stderr.getvalue() or "")
-            output = text.strip().splitlines()
+            lines = text.strip().splitlines()
 
-            for line in output:
+            for line in lines:
                 if ":" not in line:
                     continue
-
                 parts = line.split(":", 3)
                 if len(parts) < 4:
                     continue
-
-                filepath, lineno, col, remainder = parts
+                _, lineno, _, message = parts
                 lineno = lineno.strip()
-
-                if " " not in remainder:
+                if " " not in message:
                     continue
-
-                msg_id, msg_text = remainder.split(" ", 1)
-
+                msg_id, msg_text = message.split(" ", 1)
                 self.suggestions.append({
                     "line": int(lineno) if lineno.isdigit() else None,
                     "code": msg_id.strip(),
-                    "message": msg_text.strip(),
+                    "message": msg_text.strip()
                 })
-
-        except Exception as e:
-            self.suggestions.append({
-                "line": None,
-                "code": "PylintError",
-                "message": f"Pylint could not run: {e}"
-            })
-
-    # -----------------------------------------------------
+        except:
+            pass
 
     def _extract_top_nodes(self):
         wanted = [
@@ -298,40 +282,31 @@ class CodeAnalyzer(ast.NodeVisitor):
         ]
         self.top_nodes = {n: self.node_counts.get(n, 0) for n in wanted}
 
-    # -----------------------------------------------------
-
     def _generate_ast_insights(self):
         insights = []
         loc = max(1, self.lines)
 
-        def is_high(count, factor):
-            return count >= (loc / factor)
+        def high(c, f):
+            return c >= (loc / f)
 
         tn = self.top_nodes
-
-        if is_high(tn["If"], 15):
-            insights.append("Many conditional statements — try simplifying logic.")
-        if is_high(tn["Call"], 12):
-            insights.append("Large number of function calls — may indicate repeated work.")
-        if is_high(tn["Assign"], 20):
-            insights.append("Many assignments — try grouping logic.")
-
+        if high(tn["If"], 15):
+            insights.append("Many conditional statements detected.")
+        if high(tn["Call"], 12):
+            insights.append("High number of function calls detected.")
+        if high(tn["Assign"], 20):
+            insights.append("Many assignments detected.")
         self.ast_insights = insights
-
-    # -----------------------------------------------------
 
     def calculate_quality_score(self):
         score = 100
-
         if self.avg_complexity is not None:
             score -= min(40, self.avg_complexity * 5)
-
         if self.maintainability is not None:
             if self.maintainability < 50:
                 score -= 25
             elif self.maintainability < 70:
                 score -= 10
-
         score -= min(20, self.max_nesting * 4)
-
         return max(0, min(100, int(score)))
+

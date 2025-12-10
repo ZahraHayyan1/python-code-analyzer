@@ -4,6 +4,7 @@ from fileRead import preprocess_python_file
 from analyzer import CodeAnalyzer
 from report_generator import generate_report
 
+
 base_dir = os.path.dirname(__file__)
 
 app = Flask(
@@ -34,7 +35,6 @@ def upload_file():
     file_path = os.path.join(UPLOAD_FOLDER, file.filename)
     file.save(file_path)
 
-    # Clean code
     processed = preprocess_python_file(file_path)
     code = processed["cleaned_code"]
 
@@ -52,22 +52,16 @@ def upload_file():
         "max_nesting": analyzer.max_nesting,
     }
 
-    # Syntax
-    syntax = {
-        "error": analyzer.error is not None,
-        "error_type": analyzer.error_type,
-        "line": analyzer.error_line,
-        "msg": analyzer.error_msg or "",
-    }
+    # SYNTAX ERRORS (NEW)
+    syntax_data = analyzer.syntax_errors
 
-    # Summary
     summary = (
         f"This Python file contains {metrics['total_lines']} lines, "
         f"{metrics['classes']} classes, {metrics['functions']} functions, "
         f"and {metrics['imports']} imports."
     )
 
-    # OVERALL QUALITY SCORE
+    # QUALITY SCORE
     score = analyzer.calculate_quality_score()
 
     if score >= 80:
@@ -80,26 +74,22 @@ def upload_file():
         quality_label = "Needs Improvement"
         quality_color = "red"
 
-    # RESULTS PACK
     results = {
         "file_name": file.filename,
         "summary": summary,
         "metrics": metrics,
-        "syntax": syntax,
+        "syntax_errors": syntax_data,     # ← NEW CLEAN FIELD
         "classes": analyzer.class_details,
-        "functions": analyzer.function_details,      # includes quality score
+        "functions": analyzer.function_details,
         "suggestions": analyzer.suggestions,
         "nodes": dict(analyzer.node_counts),
-
         "top_nodes": analyzer.top_nodes,
         "ast_insights": analyzer.ast_insights,
-
         "quality_percent": score,
         "quality_label": quality_label,
         "quality_color": quality_color,
     }
 
-    # Generate report
     report_name = f"{os.path.splitext(file.filename)[0]}_report.html"
     report_path = os.path.join(REPORT_FOLDER, report_name)
     generate_report(results, output_path=report_path)
@@ -117,5 +107,6 @@ def download_report(filename):
 
 if __name__ == "__main__":
     app.run(debug=True)
+
 
 
