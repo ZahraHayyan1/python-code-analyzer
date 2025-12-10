@@ -152,32 +152,33 @@
 
 
         <!-- ================= SYNTAX ERRORS ================= -->
-        <section class="section">
-            <h3>Syntax Errors</h3>
+<section class="section">
+    <h3>Syntax Errors</h3>
 
-            {% if syntax_errors %}
-                {% for err in syntax_errors %}
-                <div class="syntax-box">
-                    <div class="syntax-header">
-                        <span class="syntax-type">{{ err.type }}</span>
-                        <span class="syntax-line">Line {{ err.line }}, Column {{ err.column }}</span>
-                    </div>
-                    <p class="syntax-message">{{ err.message }}</p>
-                    <p class="syntax-hint"><strong>Hint:</strong> {{ err.hint }}</p>
-                </div>
-                {% endfor %}
-            {% else %}
-                <p>No syntax errors found.</p>
-            {% endif %}
-
-            <div class="tips-box">
-                <h4>Helpful Tips</h4>
-                <ul>
-                    <li>Syntax errors are usually caused by missing parentheses, colons, or indentation issues.</li>
-                    <li>Fix syntax errors before worrying about code quality.</li>
-                </ul>
+    {% if syntax_check.has_error %}
+        {% for err in syntax_check.errors %}
+        <div class="syntax-box">
+            <div class="syntax-header">
+                <span class="syntax-type">{{ err.type }}</span>
+                <span class="syntax-line">Line {{ err.line }}, Column {{ err.column }}</span>
             </div>
-        </section>
+            <p class="syntax-message">{{ err.message }}</p>
+            <p class="syntax-hint"><strong>Hint:</strong> {{ err.hint }}</p>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>No syntax errors found.</p>
+    {% endif %}
+
+    <div class="tips-box">
+        <h4>Helpful Tips</h4>
+        <ul>
+            <li>Syntax errors are usually caused by missing parentheses, colons, or indentation issues.</li>
+            <li>Fix syntax errors before worrying about code quality.</li>
+        </ul>
+    </div>
+</section>
+
 
 
 
@@ -196,7 +197,7 @@
                 </div>
                 {% endfor %}
             {% else %}
-                <p>No style suggestions — looks clean!</p>
+                <p>No style suggestions. looks clean!</p>
             {% endif %}
 
             <div class="tips-box">
