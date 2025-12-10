@@ -41,7 +41,6 @@ def upload_file():
     analyzer = CodeAnalyzer(code, file_path=file_path)
     analyzer.analyze()
 
-    # METRICS
     metrics = {
         "total_lines": analyzer.lines,
         "functions": analyzer.functions,
@@ -52,16 +51,12 @@ def upload_file():
         "max_nesting": analyzer.max_nesting,
     }
 
-    # SYNTAX ERRORS (NEW)
-    syntax_data = analyzer.syntax_errors
-
     summary = (
         f"This Python file contains {metrics['total_lines']} lines, "
         f"{metrics['classes']} classes, {metrics['functions']} functions, "
         f"and {metrics['imports']} imports."
     )
 
-    # QUALITY SCORE
     score = analyzer.calculate_quality_score()
 
     if score >= 80:
@@ -78,13 +73,21 @@ def upload_file():
         "file_name": file.filename,
         "summary": summary,
         "metrics": metrics,
-        "syntax_errors": syntax_data,     # ← NEW CLEAN FIELD
+
+        # NEW syntax checker output
+        "syntax_check": {
+            "has_error": len(analyzer.syntax_errors) > 0,
+            "errors": analyzer.syntax_errors
+        },
+
         "classes": analyzer.class_details,
         "functions": analyzer.function_details,
         "suggestions": analyzer.suggestions,
+
         "nodes": dict(analyzer.node_counts),
         "top_nodes": analyzer.top_nodes,
         "ast_insights": analyzer.ast_insights,
+
         "quality_percent": score,
         "quality_label": quality_label,
         "quality_color": quality_color,
@@ -107,6 +110,7 @@ def download_report(filename):
 
 if __name__ == "__main__":
     app.run(debug=True)
+
 
 
 

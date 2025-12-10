@@ -310,3 +310,4 @@ class CodeAnalyzer(ast.NodeVisitor):
         score -= min(20, self.max_nesting * 4)
         return max(0, min(100, int(score)))
 
+
