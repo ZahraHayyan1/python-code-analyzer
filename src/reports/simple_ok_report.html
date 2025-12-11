@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Python Code Analysis Report – assignments.py</title>
+    <title>Python Code Analysis Report – simple_ok.py</title>
 
     <style>
         body { font-family: Arial, sans-serif; margin: 30px; background:#faf9fb; }
@@ -51,7 +51,7 @@
 <body>
 
 <h1>Python Code Analysis Report</h1>
-<p><strong>File:</strong> assignments.py</p>
+<p><strong>File:</strong> simple_ok.py</p>
 
 
 <!-- ================= OVERALL QUALITY ================= -->
@@ -62,9 +62,9 @@
         <div class="overall-bar 
             good
             "
-            style="width: 81%;"></div>
+            style="width: 85%;"></div>
     </div>
-    <p><strong>Excellent Code Quality — 81%</strong></p>
+    <p><strong>Excellent Code Quality — 85%</strong></p>
 
 
 
@@ -73,26 +73,37 @@
 <h2>Summary Metrics</h2>
 <table>
     <tr><th>Metric</th><th>Value</th></tr>
-    <tr><td>Total Lines</td><td>11</td></tr>
-    <tr><td>Functions</td><td>1</td></tr>
-    <tr><td>Classes</td><td>0</td></tr>
+    <tr><td>Total Lines</td><td>5</td></tr>
+    <tr><td>Functions</td><td>2</td></tr>
+    <tr><td>Classes</td><td>1</td></tr>
     <tr><td>Imports</td><td>0</td></tr>
     <tr>
         <td>Average Complexity</td>
-        <td>1.0</td>
+        <td>1.3333333333333333</td>
     </tr>
     <tr>
         <td>Maintainability Index</td>
-        <td>63.60898993488368</td>
+        <td>79.7423427057672</td>
     </tr>
-    <tr><td>Max Nesting</td><td>1</td></tr>
+    <tr><td>Max Nesting</td><td>2</td></tr>
 </table>
 
 
 <!-- ================= CLASSES ================= -->
 <h2>Class Structure</h2>
 
-<p>No classes found.</p>
+<table>
+    <tr><th>Name</th><th>Start</th><th>End</th><th>LOC</th><th>Methods</th></tr>
+    
+    <tr>
+        <td>Greeter</td>
+        <td>3</td>
+        <td>5</td>
+        <td>3</td>
+        <td>1</td>
+    </tr>
+    
+</table>
 
 
 
@@ -103,19 +114,36 @@
     <tr><th>Name</th><th>Start</th><th>End</th><th>LOC</th><th>Params</th><th>Complexity</th><th>Quality</th></tr>
     
     <tr>
-        <td>many_assigns</td>
+        <td>add</td>
         <td>1</td>
-        <td>11</td>
-        <td>11</td>
-        <td></td>
+        <td>2</td>
+        <td>2</td>
+        <td>a, b</td>
         <td>1</td>
 
         <td>
             <div class="quality-bar 
                 good
                 "
-                style="width: 93%;"></div>
-            93%
+                style="width: 100%;"></div>
+            100%
+        </td>
+    </tr>
+    
+    <tr>
+        <td>say</td>
+        <td>4</td>
+        <td>5</td>
+        <td>2</td>
+        <td>self, name</td>
+        <td>1</td>
+
+        <td>
+            <div class="quality-bar 
+                good
+                "
+                style="width: 100%;"></div>
+            100%
         </td>
     </tr>
     
@@ -144,17 +172,17 @@
     
     <tr>
         <td>Name</td>
-        <td>18</td>
+        <td>4</td>
     </tr>
     
     <tr>
         <td>Assign</td>
-        <td>9</td>
+        <td>0</td>
     </tr>
     
     <tr>
         <td>Call</td>
-        <td>0</td>
+        <td>1</td>
     </tr>
     
     <tr>
@@ -184,7 +212,7 @@
     
     <tr>
         <td>BinOp</td>
-        <td>7</td>
+        <td>1</td>
     </tr>
     
     <tr>
