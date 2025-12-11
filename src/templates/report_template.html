@@ -186,7 +186,7 @@
     </div>
     {% endfor %}
 {% else %}
-<p>No style suggestions — your code looks clean.</p>
+<p>No style suggestions your code looks clean.</p>
 {% endif %}
 
 
@@ -202,6 +202,20 @@
     {% endfor %}
 </table>
 
+
+<!-- ================= AST INSIGHTS ================= -->
+<h2>AST Insights</h2>
+{% if ast_insights %}
+    <ul>
+        {% for i in ast_insights %}
+        <li>{{ i }}</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No unusual patterns detected.</p>
+{% endif %}
+
 </body>
 </html>
+
 

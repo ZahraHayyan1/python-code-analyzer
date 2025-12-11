@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Python Code Analysis Report – large_classes.py</title>
+    <title>Python Code Analysis Report – test_sample.py</title>
 
     <style>
         body { font-family: Arial, sans-serif; margin: 30px; background:#faf9fb; }
@@ -51,7 +51,7 @@
 <body>
 
 <h1>Python Code Analysis Report</h1>
-<p><strong>File:</strong> large_classes.py</p>
+<p><strong>File:</strong> test_sample.py</p>
 
 
 <!-- ================= OVERALL QUALITY ================= -->
@@ -60,11 +60,11 @@
 
     <div class="overall-track">
         <div class="overall-bar 
-            good
+            poor
             "
-            style="width: 85%;"></div>
+            style="width: 40%;"></div>
     </div>
-    <p><strong>Excellent Code Quality — 85%</strong></p>
+    <p><strong>Needs Improvement — 40%</strong></p>
 
 
 
@@ -73,19 +73,19 @@
 <h2>Summary Metrics</h2>
 <table>
     <tr><th>Metric</th><th>Value</th></tr>
-    <tr><td>Total Lines</td><td>12</td></tr>
-    <tr><td>Functions</td><td>9</td></tr>
-    <tr><td>Classes</td><td>3</td></tr>
-    <tr><td>Imports</td><td>0</td></tr>
+    <tr><td>Total Lines</td><td>39</td></tr>
+    <tr><td>Functions</td><td>6</td></tr>
+    <tr><td>Classes</td><td>1</td></tr>
+    <tr><td>Imports</td><td>2</td></tr>
     <tr>
         <td>Average Complexity</td>
-        <td>1.25</td>
+        <td>3.0</td>
     </tr>
     <tr>
         <td>Maintainability Index</td>
-        <td>100.0</td>
+        <td>47.16767223738046</td>
     </tr>
-    <tr><td>Max Nesting</td><td>2</td></tr>
+    <tr><td>Max Nesting</td><td>6</td></tr>
 </table>
 
 
@@ -96,26 +96,10 @@
     <tr><th>Name</th><th>Start</th><th>End</th><th>LOC</th><th>Methods</th></tr>
     
     <tr>
-        <td>A</td>
-        <td>1</td>
-        <td>4</td>
-        <td>4</td>
-        <td>3</td>
-    </tr>
-    
-    <tr>
-        <td>B</td>
-        <td>5</td>
-        <td>9</td>
-        <td>5</td>
-        <td>4</td>
-    </tr>
-    
-    <tr>
-        <td>C</td>
-        <td>10</td>
-        <td>12</td>
-        <td>3</td>
+        <td>SampleClass</td>
+        <td>19</td>
+        <td>26</td>
+        <td>8</td>
         <td>2</td>
     </tr>
     
@@ -130,147 +114,96 @@
     <tr><th>Name</th><th>Start</th><th>End</th><th>LOC</th><th>Params</th><th>Complexity</th><th>Quality</th></tr>
     
     <tr>
-        <td>m1</td>
-        <td>2</td>
-        <td>2</td>
-        <td>1</td>
-        <td>self</td>
-        <td>1</td>
-
-        <td>
-            <div class="quality-bar 
-                good
-                "
-                style="width: 100%;"></div>
-            100%
-        </td>
-    </tr>
-    
-    <tr>
-        <td>m2</td>
+        <td>add_numbers</td>
         <td>3</td>
+        <td>8</td>
+        <td>6</td>
+        <td>a, b, c</td>
         <td>3</td>
-        <td>1</td>
-        <td>self</td>
-        <td>1</td>
 
         <td>
             <div class="quality-bar 
                 good
                 "
-                style="width: 100%;"></div>
-            100%
+                style="width: 94%;"></div>
+            94%
         </td>
     </tr>
     
     <tr>
-        <td>m3</td>
-        <td>4</td>
-        <td>4</td>
-        <td>1</td>
-        <td>self</td>
-        <td>1</td>
-
-        <td>
-            <div class="quality-bar 
-                good
-                "
-                style="width: 100%;"></div>
-            100%
-        </td>
-    </tr>
-    
-    <tr>
-        <td>x1</td>
-        <td>6</td>
-        <td>6</td>
-        <td>1</td>
-        <td>self</td>
-        <td>1</td>
-
-        <td>
-            <div class="quality-bar 
-                good
-                "
-                style="width: 100%;"></div>
-            100%
-        </td>
-    </tr>
-    
-    <tr>
-        <td>x2</td>
-        <td>7</td>
-        <td>7</td>
-        <td>1</td>
-        <td>self</td>
-        <td>1</td>
-
-        <td>
-            <div class="quality-bar 
-                good
-                "
-                style="width: 100%;"></div>
-            100%
-        </td>
-    </tr>
-    
-    <tr>
-        <td>x3</td>
-        <td>8</td>
-        <td>8</td>
-        <td>1</td>
-        <td>self</td>
-        <td>1</td>
-
-        <td>
-            <div class="quality-bar 
-                good
-                "
-                style="width: 100%;"></div>
-            100%
-        </td>
-    </tr>
-    
-    <tr>
-        <td>x4</td>
+        <td>buggy_function</td>
         <td>9</td>
+        <td>18</td>
+        <td>10</td>
+        <td>x</td>
+        <td>4</td>
+
+        <td>
+            <div class="quality-bar 
+                good
+                "
+                style="width: 90%;"></div>
+            90%
+        </td>
+    </tr>
+    
+    <tr>
+        <td>method_one</td>
+        <td>20</td>
+        <td>23</td>
+        <td>4</td>
+        <td>self, x</td>
+        <td>2</td>
+
+        <td>
+            <div class="quality-bar 
+                good
+                "
+                style="width: 100%;"></div>
+            100%
+        </td>
+    </tr>
+    
+    <tr>
+        <td>method_two</td>
+        <td>24</td>
+        <td>26</td>
+        <td>3</td>
+        <td>self</td>
+        <td>2</td>
+
+        <td>
+            <div class="quality-bar 
+                good
+                "
+                style="width: 100%;"></div>
+            100%
+        </td>
+    </tr>
+    
+    <tr>
+        <td>nested</td>
+        <td>27</td>
+        <td>35</td>
         <td>9</td>
-        <td>1</td>
-        <td>self</td>
-        <td>1</td>
+        <td></td>
+        <td>6</td>
 
         <td>
             <div class="quality-bar 
                 good
                 "
-                style="width: 100%;"></div>
-            100%
+                style="width: 80%;"></div>
+            80%
         </td>
     </tr>
     
     <tr>
-        <td>r1</td>
-        <td>11</td>
-        <td>11</td>
-        <td>1</td>
-        <td>self</td>
-        <td>1</td>
-
-        <td>
-            <div class="quality-bar 
-                good
-                "
-                style="width: 100%;"></div>
-            100%
-        </td>
-    </tr>
-    
-    <tr>
-        <td>r2</td>
-        <td>12</td>
-        <td>12</td>
-        <td>1</td>
-        <td>self</td>
+        <td>messy</td>
+        <td>36</td>
+        <td>39</td>
+        <td>4</td>
+        <td></td>
         <td>1</td>
 
         <td>
@@ -296,7 +229,22 @@
 <!-- ================= SUGGESTIONS ================= -->
 <h2>Style Suggestions</h2>
 
-<p>No style suggestions — your code looks clean.</p>
+    
+    <div class="suggestion-box">
+        <div class="suggestion-header">PyFlakes — Line None</div>
+        <div>1:1: &#39;math&#39; imported but unused</div>
+    </div>
+    
+    <div class="suggestion-box">
+        <div class="suggestion-header">PyFlakes — Line None</div>
+        <div>2:1: &#39;os&#39; imported but unused</div>
+    </div>
+    
+    <div class="suggestion-box">
+        <div class="suggestion-header">PyFlakes — Line None</div>
+        <div>16:13: local variable &#39;risky_operation&#39; is assigned to but never used</div>
+    </div>
+    
 
 
 
@@ -307,27 +255,27 @@
     
     <tr>
         <td>Name</td>
-        <td>0</td>
+        <td>35</td>
     </tr>
     
     <tr>
         <td>Assign</td>
-        <td>0</td>
+        <td>3</td>
     </tr>
     
     <tr>
         <td>Call</td>
-        <td>0</td>
+        <td>9</td>
     </tr>
     
     <tr>
         <td>If</td>
-        <td>0</td>
+        <td>7</td>
     </tr>
     
     <tr>
         <td>For</td>
-        <td>0</td>
+        <td>4</td>
     </tr>
     
     <tr>
@@ -337,7 +285,7 @@
     
     <tr>
         <td>Return</td>
-        <td>0</td>
+        <td>5</td>
     </tr>
     
     <tr>
@@ -347,12 +295,12 @@
     
     <tr>
         <td>BinOp</td>
-        <td>0</td>
+        <td>7</td>
     </tr>
     
     <tr>
         <td>Try</td>
-        <td>0</td>
+        <td>1</td>
     </tr>
     
 </table>
@@ -361,7 +309,13 @@
 <!-- ================= AST INSIGHTS ================= -->
 <h2>AST Insights</h2>
 
-    <p>No unusual patterns detected.</p>
+    <ul>
+        
+        <li>Many conditional statements detected.</li>
+        
+        <li>High number of function calls detected.</li>
+        
+    </ul>
 
 
 </body>

@@ -1,2 +1,3 @@
-def bad_func(
-    print('oops')
+# Syntax error file
+def broken_function(
+    print("This will cause a syntax error")
