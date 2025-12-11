@@ -17,11 +17,9 @@
         <h2 class="section-title">Analysis Results</h2>
         <p class="file-name">File: <span>{{ file_name }}</span></p>
 
-
-        <!-- ================= SUMMARY METRICS ================= -->
+        <!-- SUMMARY METRICS -->
         <section class="section">
             <h3>Summary Metrics</h3>
-
             <table class="metrics-table">
                 <tr><th>Metric</th><th>Value</th></tr>
                 <tr><td>Total Lines</td><td>{{ metrics.total_lines }}</td></tr>
@@ -41,19 +39,15 @@
             <div class="tips-box">
                 <h4>Helpful Tips</h4>
                 <ul>
-                    <li><strong>Total Lines:</strong> Smaller files are usually easier to maintain.</li>
-                    <li><strong>Complexity:</strong> Lower numbers mean your functions are easier to read.</li>
-                    <li><strong>Maintainability:</strong> High scores mean your code will be easier to modify in the future.</li>
+                    <li>Average complexity shows how hard your functions are to follow.</li>
+                    <li>A higher maintainability index means the code is easier to work with long-term.</li>
                 </ul>
             </div>
         </section>
 
-
-
-        <!-- ================= CLASS STRUCTURE ================= -->
+        <!-- CLASS STRUCTURE -->
         <section class="section">
             <h3>Class Structure</h3>
-
             {% if classes %}
             <table class="detail-table">
                 <tr><th>Name</th><th>Start</th><th>End</th><th>Lines</th><th>Methods</th></tr>
@@ -68,29 +62,25 @@
                 {% endfor %}
             </table>
             {% else %}
-                <p>No classes found in this file.</p>
+                <p>No classes found.</p>
             {% endif %}
 
             <div class="tips-box">
                 <h4>Helpful Tips</h4>
                 <ul>
-                    <li>Large classes may be doing too many things consider splitting responsibilities.</li>
-                    <li>Smaller, focused classes are easier to test and reuse.</li>
+                    <li>Small, focused classes are easier to test and reuse.</li>
                 </ul>
             </div>
         </section>
 
-
-
-        <!-- ================= FUNCTION STRUCTURE ================= -->
+        <!-- FUNCTION STRUCTURE -->
         <section class="section">
             <h3>Function Structure</h3>
-
             {% if functions %}
             <table class="detail-table">
                 <tr>
-                    <th>Name</th><th>Start</th><th>End</th>
-                    <th>Lines</th><th>Params</th><th>Complexity</th><th>Quality</th>
+                    <th>Name</th><th>Start</th><th>End</th><th>Lines</th>
+                    <th>Params</th><th>Complexity</th><th>Quality</th>
                 </tr>
 
                 {% for f in functions %}
@@ -102,7 +92,6 @@
                     <td>{{ f.args|join(", ") if f.args else "—" }}</td>
                     <td>{{ f.complexity if f.complexity else "N/A" }}</td>
 
-                    <!-- QUALITY BAR -->
                     <td>
                         <div class="quality-bar-container">
                             {% if f.quality >= 80 %}
@@ -119,70 +108,58 @@
                 {% endfor %}
             </table>
             {% else %}
-                <p>No functions found in this file.</p>
+                <p>No functions found.</p>
             {% endif %}
 
             <div class="tips-box">
                 <h4>Helpful Tips</h4>
                 <ul>
-                    <li>Shorter functions are easier to understand and debug.</li>
-                    <li>Too many parameters? Consider grouping related values.</li>
-                    <li>Deep nesting makes code harder to follow try early returns.</li>
+                    <li>Shorter functions are easier to debug and maintain.</li>
+                    <li>High complexity suggests breaking logic into smaller helper functions.</li>
                 </ul>
             </div>
         </section>
 
-
-
-        <!-- ================= NESTING ================= -->
+        <!-- NESTING -->
         <section class="section">
             <h3>Nesting Depth</h3>
-
             <p>{{ metrics.max_nesting }} levels detected.</p>
 
             <div class="tips-box">
                 <h4>Helpful Tips</h4>
                 <ul>
-                    <li>Avoid deeply nested blocks they quickly become hard to follow.</li>
-                    <li>Use helper functions to reduce nested logic.</li>
+                    <li>Try to keep nesting shallow, using early returns can help.</li>
                 </ul>
             </div>
         </section>
 
+        <!-- SYNTAX ERRORS -->
+        <section class="section">
+            <h3>Syntax Errors</h3>
+            {% if syntax_check.has_error %}
+                {% for err in syntax_check.errors %}
+                    <div class="syntax-box">
+                        <div class="syntax-header">
+                            <span>{{ err.type }}</span>
+                            <span>Line {{ err.line }}, Column {{ err.column }}</span>
+                        </div>
+                        <p>{{ err.message }}</p>
+                        <p><strong>Hint:</strong> {{ err.hint }}</p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No syntax errors.</p>
+            {% endif %}
 
-
-        <!-- ================= SYNTAX ERRORS ================= -->
-<section class="section">
-    <h3>Syntax Errors</h3>
-
-    {% if syntax_check.has_error %}
-        {% for err in syntax_check.errors %}
-        <div class="syntax-box">
-            <div class="syntax-header">
-                <span class="syntax-type">{{ err.type }}</span>
-                <span class="syntax-line">Line {{ err.line }}, Column {{ err.column }}</span>
+            <div class="tips-box">
+                <h4>Helpful Tips</h4>
+                <ul>
+                    <li>Fix syntax errors first! other metrics depend on valid code.</li>
+                </ul>
             </div>
-            <p class="syntax-message">{{ err.message }}</p>
-            <p class="syntax-hint"><strong>Hint:</strong> {{ err.hint }}</p>
-        </div>
-        {% endfor %}
-    {% else %}
-        <p>No syntax errors found.</p>
-    {% endif %}
+        </section>
 
-    <div class="tips-box">
-        <h4>Helpful Tips</h4>
-        <ul>
-            <li>Syntax errors are usually caused by missing parentheses, colons, or indentation issues.</li>
-            <li>Fix syntax errors before worrying about code quality.</li>
-        </ul>
-    </div>
-</section>
-
-
-
-
-        <!-- ================= STYLE SUGGESTIONS ================= -->
+        <!-- STYLE SUGGESTIONS (FROM PYFLAKES) -->
         <section class="section">
             <h3>Style Suggestions</h3>
 
@@ -190,53 +167,38 @@
                 {% for s in suggestions %}
                 <div class="suggestion-box">
                     <div class="suggestion-header">
-                        <span class="suggestion-code">{{ s.code }}</span>
-                        <span class="suggestion-line">{% if s.line %}Line {{ s.line }}{% else %}—{% endif %}</span>
+                        <span>{{ s.code }}</span>
+                        <span>{% if s.line %}Line {{ s.line }}{% else %}—{% endif %}</span>
                     </div>
-                    <p class="suggestion-message">{{ s.message }}</p>
+                    <p>{{ s.message }}</p>
                 </div>
                 {% endfor %}
             {% else %}
-                <p>No style suggestions. looks clean!</p>
+                <p>No suggestions found.</p>
             {% endif %}
 
             <div class="tips-box">
                 <h4>Helpful Tips</h4>
                 <ul>
-                    <li>These suggestions come from automated style rules (Pylint).</li>
-                    <li>You don’t need to fix everything focus on repeated issues.</li>
+                    <li>You don’t need to fix everything focus on issues that repeat.</li>
                 </ul>
             </div>
         </section>
 
-
-
-        <!-- ================= TOP AST NODES ================= -->
+        <!-- AST TOP NODES -->
         <section class="section">
             <h3>Top AST Nodes</h3>
-
             <table class="detail-table">
                 <tr><th>Node</th><th>Count</th></tr>
                 {% for name, count in top_nodes.items() %}
                 <tr><td>{{ name }}</td><td>{{ count }}</td></tr>
                 {% endfor %}
             </table>
-
-            <div class="tips-box">
-                <h4>Helpful Tips</h4>
-                <ul>
-                    <li>These nodes represent how Python sees your code internally.</li>
-                    <li>If a node appears too many times, it might indicate repeated patterns or complexity.</li>
-                </ul>
-            </div>
         </section>
 
-
-
-        <!-- ================= AST INSIGHTS ================= -->
+        <!-- AST INSIGHTS -->
         <section class="section">
             <h3>AST Insights</h3>
-
             {% if ast_insights %}
                 <div class="ast-insight-box">
                     {% for i in ast_insights %}
@@ -246,34 +208,49 @@
             {% else %}
                 <p>No unusual patterns detected.</p>
             {% endif %}
-        </section>
-
-
-
-        <!-- ================= QUALITY SCORE ================= -->
-        <section class="section">
-            <h3>Overall Quality Score</h3>
-
-            {% set score = quality_percent %}
-
-            <div class="quality-wrapper">
-                <div class="quality-track">
-                    <div class="quality-bar {{ quality_color }}" style="width: {{ score }}%;"></div>
-                </div>
-                <p class="quality-label">{{ quality_label }} ({{ score }}%)</p>
-            </div>
 
             <div class="tips-box">
                 <h4>Helpful Tips</h4>
                 <ul>
-                    <li>Your final score is based on complexity, nesting, and maintainability.</li>
-                    <li>Improving function structure has the biggest impact on score.</li>
+                    <li>Insights highlight unusual patterns or heavy use of specific logic.</li>
+                    <li>These hints help you understand where complexity may be hiding.</li>
                 </ul>
             </div>
         </section>
 
+        <!-- OVERALL QUALITY -->
+        <!-- OVERALL QUALITY -->
+<section class="section">
+    <h3>Overall Quality Score</h3>
 
-        <!-- ================= BUTTONS ================= -->
+    {% if syntax_check.has_error %}
+        <div class="syntax-warning-box">
+            <div class="syntax-warning-icon">⚠️</div>
+            <div class="syntax-warning-text">
+                <h4>Analysis Unavailable</h4>
+                <p>Your code contains syntax errors fix them to unlock full quality analysis.</p>
+            </div>
+        </div>
+    {% else %}
+        <div class="quality-track">
+            <div class="quality-bar {{ quality_color }}" style="width: {{ quality_percent }}%;"></div>
+        </div>
+        <p class="quality-label">{{ quality_label }} ({{ quality_percent }}%)</p>
+    {% endif %}
+
+    <div class="tips-box">
+        <p><strong>Helpful Tips</strong></p>
+        <ul>
+            <li>The score combines complexity, nesting, and maintainability into one rating.</li>
+            <li>Improving function structure usually improves the score the most.</li>
+        </ul>
+    </div>
+</section>
+
+
+        
+
+
         <div class="buttons-row">
             <a href="{{ url_for('download_report', filename=report_file) }}" class="upload-btn">Download Report</a>
             <a href="{{ url_for('upload_page') }}" class="upload-btn secondary-btn">Upload Another File</a>
@@ -284,6 +261,7 @@
 
 </body>
 </html>
+
 
 
 

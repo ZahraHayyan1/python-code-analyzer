@@ -1,5 +1,8 @@
 import ast
 import collections
+from pyflakes.api import check
+from pyflakes.reporter import Reporter
+from io import StringIO
 
 try:
     from radon.complexity import cc_visit
@@ -7,11 +10,6 @@ try:
 except ImportError:
     cc_visit = None
     mi_visit = None
-
-try:
-    from pylint import epylint as lint
-except ImportError:
-    lint = None
 
 
 def generate_hint(message: str) -> str:
@@ -80,6 +78,7 @@ class CodeAnalyzer(ast.NodeVisitor):
         self.top_nodes = {}
         self.ast_insights = []
 
+
     def analyze(self):
         syntax = check_syntax(self.code)
         if syntax["has_error"]:
@@ -97,9 +96,10 @@ class CodeAnalyzer(ast.NodeVisitor):
         self._compute_nesting(self.tree, 0)
         self._analyze_complexity()
         self._build_details()
-        self._analyze_pylint()
+        self._analyze_pyflakes()
         self._extract_top_nodes()
         self._generate_ast_insights()
+
 
     def visit(self, node):
         t = type(node).__name__
@@ -107,23 +107,29 @@ class CodeAnalyzer(ast.NodeVisitor):
         self.node_counts[t] += 1
         super().visit(node)
 
+
     def visit_FunctionDef(self, node):
         self.functions += 1
         self.generic_visit(node)
+
 
     def visit_AsyncFunctionDef(self, node):
         self.functions += 1
         self.generic_visit(node)
 
+
     def visit_ClassDef(self, node):
         self.classes += 1
         self.generic_visit(node)
 
+
     def visit_Import(self, node):
         self.imports += 1
 
+
     def visit_ImportFrom(self, node):
         self.imports += 1
+
 
     def _compute_nesting(self, node, depth):
         blocks = (
@@ -136,8 +142,10 @@ class CodeAnalyzer(ast.NodeVisitor):
         for child in ast.iter_child_nodes(node):
             self._compute_nesting(child, depth)
 
+
     def _compute_local_nesting(self, fn):
         max_depth = 0
+
         def walk(n, d):
             nonlocal max_depth
             blocks = (ast.If, ast.For, ast.While, ast.With, ast.Try)
@@ -146,8 +154,10 @@ class CodeAnalyzer(ast.NodeVisitor):
                 max_depth = max(max_depth, d)
             for c in ast.iter_child_nodes(n):
                 walk(c, d)
+
         walk(fn, 0)
         return max_depth
+
 
     def _score_function(self, complexity, loc, params, nesting):
         if complexity is None:
@@ -186,6 +196,7 @@ class CodeAnalyzer(ast.NodeVisitor):
 
         return cx + ln + pm + ns
 
+
     def _analyze_complexity(self):
         if cc_visit:
             try:
@@ -204,6 +215,7 @@ class CodeAnalyzer(ast.NodeVisitor):
                 self.maintainability = mi_visit(self.code, False)
             except:
                 pass
+
 
     def _build_details(self):
         if self.tree is None:
@@ -227,6 +239,7 @@ class CodeAnalyzer(ast.NodeVisitor):
                     "complexity": c,
                     "quality": q
                 })
+
             if isinstance(node, ast.ClassDef):
                 end = getattr(node, "end_lineno", node.lineno)
                 loc = end - node.lineno + 1
@@ -241,39 +254,35 @@ class CodeAnalyzer(ast.NodeVisitor):
                     "loc": loc,
                     "methods_count": len(m)
                 })
+
         self.function_details = sorted(functions, key=lambda x: x["line"])
         self.class_details = sorted(classes, key=lambda x: x["line"])
 
-    def _analyze_pylint(self):
-        self.suggestions = []
-        if lint is None or not self.file_path:
-            return
-        try:
-            stdout, stderr = lint.py_run(
-                f"{self.file_path} --score=no --output-format=text",
-                return_std=True
-            )
-            text = (stdout.getvalue() or "") + "\n" + (stderr.getvalue() or "")
-            lines = text.strip().splitlines()
 
-            for line in lines:
-                if ":" not in line:
+    def _analyze_pyflakes(self):
+        self.suggestions = []
+        try:
+            err_out = StringIO()
+            reporter = Reporter(err_out, err_out)
+            check(self.code, self.file_path or "<input>", reporter)
+            output = err_out.getvalue().strip().splitlines()
+
+            for line in output:
+                parts = line.split(":", 2)
+                if len(parts) < 3:
                     continue
-                parts = line.split(":", 3)
-                if len(parts) < 4:
-                    continue
-                _, lineno, _, message = parts
-                lineno = lineno.strip()
-                if " " not in message:
-                    continue
-                msg_id, msg_text = message.split(" ", 1)
+
+                lineno = parts[1].strip()
+                message = parts[2].strip()
+
                 self.suggestions.append({
                     "line": int(lineno) if lineno.isdigit() else None,
-                    "code": msg_id.strip(),
-                    "message": msg_text.strip()
+                    "code": "PyFlakes",
+                    "message": message
                 })
         except:
             pass
+
 
     def _extract_top_nodes(self):
         wanted = [
@@ -282,32 +291,38 @@ class CodeAnalyzer(ast.NodeVisitor):
         ]
         self.top_nodes = {n: self.node_counts.get(n, 0) for n in wanted}
 
+
     def _generate_ast_insights(self):
         insights = []
         loc = max(1, self.lines)
-
-        def high(c, f):
-            return c >= (loc / f)
-
         tn = self.top_nodes
-        if high(tn["If"], 15):
+
+        call_ratio = tn["Call"] / loc
+        if_ratio = tn["If"] / loc
+        assign_ratio = tn["Assign"] / loc
+
+        if if_ratio > 0.10:
             insights.append("Many conditional statements detected.")
-        if high(tn["Call"], 12):
+        if call_ratio > 0.15:
             insights.append("High number of function calls detected.")
-        if high(tn["Assign"], 20):
+        if assign_ratio > 0.15:
             insights.append("Many assignments detected.")
+
         self.ast_insights = insights
+
 
     def calculate_quality_score(self):
         score = 100
+
         if self.avg_complexity is not None:
             score -= min(40, self.avg_complexity * 5)
+
         if self.maintainability is not None:
             if self.maintainability < 50:
                 score -= 25
             elif self.maintainability < 70:
                 score -= 10
+
         score -= min(20, self.max_nesting * 4)
+
         return max(0, min(100, int(score)))
-
-

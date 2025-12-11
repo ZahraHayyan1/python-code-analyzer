@@ -11,6 +11,7 @@
         table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
         th, td { border: 1px solid #ccc; padding: 8px; font-size: 14px; }
         th { background:#efe7f5; }
+
         .syntax-box {
             border-left:4px solid #b30000;
             background:#fff1f1;
@@ -18,15 +19,9 @@
             margin-bottom:12px;
             border-radius:4px;
         }
-        .syntax-header {
-            font-weight:bold;
-            margin-bottom:6px;
-            color:#700000;
-        }
-        .syntax-hint {
-            color:#9b1c1c;
-            font-size:13px;
-        }
+        .syntax-header { font-weight:bold; margin-bottom:6px; color:#700000; }
+        .syntax-hint { color:#9b1c1c; font-size:13px; }
+
         .suggestion-box {
             background:#f3effc;
             border-left:4px solid #5a2a78;
@@ -35,11 +30,21 @@
             border-radius:4px;
         }
         .suggestion-header { font-weight:bold; margin-bottom:6px; }
-        .quality-bar { height:10px; border-radius:4px; }
+
+        .quality-bar {
+            height:10px;
+            border-radius:4px;
+            margin-top:4px;
+        }
         .good { background:#4CAF50; }
         .medium { background:#FFB800; }
         .poor { background:#E53935; }
-        .quality-wrapper { margin-top:10px; }
+
+        .overall-track {
+            width:100%; height:16px; border-radius:8px;
+            background:#e8e8e8; overflow:hidden;
+        }
+        .overall-bar { height:16px; border-radius:8px; }
     </style>
 </head>
 
@@ -48,9 +53,20 @@
 <h1>Python Code Analysis Report</h1>
 <p><strong>File:</strong> messy.py</p>
 
-<h2>Description</h2>
-<p>This Python file contains 16 lines, 1 classes, 3 functions, and 2 imports.</p>
 
+<!-- ================= OVERALL QUALITY ================= -->
+<h2>Overall Quality Score</h2>
+<div class="overall-track">
+    <div class="overall-bar 
+        medium
+        "
+        style="width: 68%;">
+    </div>
+</div>
+<p><strong>Moderate Code Quality — 68%</strong></p>
+
+
+<!-- ================= SUMMARY ================= -->
 <h2>Summary Metrics</h2>
 <table>
     <tr><th>Metric</th><th>Value</th></tr>
@@ -60,22 +76,21 @@
     <tr><td>Imports</td><td>2</td></tr>
     <tr>
         <td>Average Complexity</td>
-        <td>2.00</td>
+        <td>2.0</td>
     </tr>
     <tr>
         <td>Maintainability Index</td>
-        <td>65.05</td>
+        <td>65.05055222047018</td>
     </tr>
-    <tr><td>Max Nesting Depth</td><td>3</td></tr>
+    <tr><td>Max Nesting</td><td>3</td></tr>
 </table>
 
 
+<!-- ================= CLASSES ================= -->
 <h2>Class Structure</h2>
 
 <table>
-    <tr>
-        <th>Name</th><th>Start</th><th>End</th><th>LOC</th><th>Methods</th>
-    </tr>
+    <tr><th>Name</th><th>Start</th><th>End</th><th>LOC</th><th>Methods</th></tr>
     
     <tr>
         <td>Test</td>
@@ -89,12 +104,11 @@
 
 
 
+<!-- ================= FUNCTIONS ================= -->
 <h2>Function Structure</h2>
 
 <table>
-    <tr>
-        <th>Name</th><th>Start</th><th>End</th><th>LOC</th><th>Params</th><th>Complexity</th><th>Quality</th>
-    </tr>
+    <tr><th>Name</th><th>Start</th><th>End</th><th>LOC</th><th>Params</th><th>Complexity</th><th>Quality</th></tr>
     
     <tr>
         <td>badFunction</td>
@@ -103,10 +117,12 @@
         <td>6</td>
         <td>x, y, z</td>
         <td>4</td>
+
         <td>
-            <div class="quality-bar good"
-                 style="width: 84%;">
-            </div>
+            <div class="quality-bar 
+                good
+                "
+                style="width: 84%;"></div>
             84%
         </td>
     </tr>
@@ -116,12 +132,14 @@
         <td>9</td>
         <td>12</td>
         <td>4</td>
-        <td>–</td>
+        <td></td>
         <td>1</td>
+
         <td>
-            <div class="quality-bar good"
-                 style="width: 100%;">
-            </div>
+            <div class="quality-bar 
+                good
+                "
+                style="width: 100%;"></div>
             100%
         </td>
     </tr>
@@ -133,10 +151,12 @@
         <td>3</td>
         <td>self</td>
         <td>1</td>
+
         <td>
-            <div class="quality-bar good"
-                 style="width: 100%;">
-            </div>
+            <div class="quality-bar 
+                good
+                "
+                style="width: 100%;"></div>
             100%
         </td>
     </tr>
@@ -145,20 +165,37 @@
 
 
 
+<!-- ================= SYNTAX ERRORS ================= -->
 <h2>Syntax Errors</h2>
 
 <p>No syntax errors detected.</p>
 
 
 
+<!-- ================= SUGGESTIONS ================= -->
 <h2>Style Suggestions</h2>
 
-<p>No style suggestions — your code looks clean.</p>
+    
+    <div class="suggestion-box">
+        <div class="suggestion-header">PyFlakes — Line None</div>
+        <div>1:1: &#39;math&#39; imported but unused</div>
+    </div>
+    
+    <div class="suggestion-box">
+        <div class="suggestion-header">PyFlakes — Line None</div>
+        <div>2:1: &#39;os&#39; imported but unused</div>
+    </div>
+    
+    <div class="suggestion-box">
+        <div class="suggestion-header">PyFlakes — Line None</div>
+        <div>11:5: local variable &#39;b&#39; is assigned to but never used</div>
+    </div>
+    
 
 
 
+<!-- ================= AST NODES ================= -->
 <h2>AST Node Distribution</h2>
-
 <table>
     <tr><th>Node</th><th>Count</th></tr>
     
@@ -213,7 +250,6 @@
     </tr>
     
 </table>
-
 
 </body>
 </html>

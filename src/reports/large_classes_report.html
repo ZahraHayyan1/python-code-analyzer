@@ -3,18 +3,57 @@
 <head>
     <meta charset="utf-8">
     <title>Python Code Analysis Report – large_classes.py</title>
+
     <style>
-        body { font-family: Arial, sans-serif; margin: 30px; }
-        h1, h2, h3 { color: #30103d; }
+        body { font-family: Arial, sans-serif; margin: 30px; background:#faf9fb; }
+        h1 { color:#4b1c68; }
+        h2 { color:#5a2a78; margin-top:40px; }
         table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
         th, td { border: 1px solid #ccc; padding: 8px; font-size: 14px; }
-        th { background: #f4f0f7; }
-        .syntax-error { color: #b30000; font-weight: bold; }
-        .bar-container { background: #f0f0f0; height: 10px; }
-        .bar { background: #7c3aed; height: 10px; }
-        .code-block { background: #f7f7f7; padding: 10px; border-radius: 4px; }
+        th { background:#efe7f5; }
+
+        .syntax-box {
+            border-left:4px solid #b30000;
+            background:#fff1f1;
+            padding:12px;
+            margin-bottom:12px;
+            border-radius:4px;
+        }
+
+        .syntax-header { font-weight:bold; margin-bottom:6px; color:#700000; }
+        .syntax-hint { color:#9b1c1c; font-size:13px; }
+
+        .suggestion-box {
+            background:#f3effc;
+            border-left:4px solid #5a2a78;
+            padding:12px;
+            margin-bottom:12px;
+            border-radius:4px;
+        }
+        .suggestion-header { font-weight:bold; margin-bottom:6px; }
+
+        .quality-bar {
+            height:10px;
+            border-radius:4px;
+            margin-top:4px;
+        }
+
+        .good { background:#4CAF50; }
+        .medium { background:#FFB800; }
+        .poor { background:#E53935; }
+
+        /* Overall Quality */
+        .overall-wrapper { margin-top:20px; }
+        .overall-track {
+            width:100%; height:16px; border-radius:8px;
+            background:#e8e8e8; overflow:hidden;
+        }
+        .overall-bar {
+            height:16px; border-radius:8px;
+        }
     </style>
 </head>
+
 <body>
 
 <h1>Python Code Analysis Report</h1>
@@ -22,6 +61,20 @@
 
 <h2>Description</h2>
 <p>This Python file contains 12 lines, 3 classes, 9 functions, and 0 imports.</p>
+
+<!-- ================= OVERALL QUALITY BAR ================= -->
+<h2>Overall Quality Score</h2>
+<div class="overall-wrapper">
+    <div class="overall-track">
+        <div class="overall-bar 
+            good
+            "
+            style="width: 85%;">
+        </div>
+    </div>
+    <p><strong>Excellent Code Quality — 85%</strong></p>
+</div>
+
 
 <h2>Summary Metrics</h2>
 <table>
@@ -32,307 +85,290 @@
     <tr><td>Imports</td><td>0</td></tr>
     <tr>
         <td>Average Complexity</td>
-        <td>
-            
-                1.25
-            
-        </td>
+        <td>1.25</td>
     </tr>
     <tr>
         <td>Maintainability Index</td>
-        <td>
-            
-                100.00
-            
-        </td>
+        <td>100.00</td>
     </tr>
     <tr><td>Max Nesting Depth</td><td>2</td></tr>
 </table>
+
 
 <h2>Class Structure</h2>
 
 <table>
     <tr>
-        <th>Name</th>
-        <th>Start Line</th>
-        <th>End Line</th>
-        <th>LOC</th>
-        <th>Methods</th>
+        <th>Name</th><th>Start</th><th>End</th><th>LOC</th><th>Methods</th>
     </tr>
     
-        <tr>
-            <td>A</td>
-            <td>1</td>
-            <td>4</td>
-            <td>4</td>
-            <td>3</td>
-        </tr>
+    <tr>
+        <td>A</td>
+        <td>1</td>
+        <td>4</td>
+        <td>4</td>
+        <td>3</td>
+    </tr>
     
-        <tr>
-            <td>B</td>
-            <td>5</td>
-            <td>9</td>
-            <td>5</td>
-            <td>4</td>
-        </tr>
+    <tr>
+        <td>B</td>
+        <td>5</td>
+        <td>9</td>
+        <td>5</td>
+        <td>4</td>
+    </tr>
     
-        <tr>
-            <td>C</td>
-            <td>10</td>
-            <td>12</td>
-            <td>3</td>
-            <td>2</td>
-        </tr>
+    <tr>
+        <td>C</td>
+        <td>10</td>
+        <td>12</td>
+        <td>3</td>
+        <td>2</td>
+    </tr>
     
 </table>
+
 
 
 <h2>Function Structure</h2>
 
 <table>
     <tr>
-        <th>Name</th>
-        <th>Start Line</th>
-        <th>End Line</th>
-        <th>LOC</th>
-        <th>Parameters</th>
-        <th>Complexity</th>
+        <th>Name</th><th>Start</th><th>End</th><th>LOC</th><th>Params</th><th>Complexity</th><th>Quality</th>
     </tr>
     
-        <tr>
-            <td>m1</td>
-            <td>2</td>
-            <td>2</td>
-            <td>1</td>
-            <td>
-                
-                    self
-                
-            </td>
-            <td>
-                
-                    1
-                
-            </td>
-        </tr>
+    <tr>
+        <td>m1</td>
+        <td>2</td>
+        <td>2</td>
+        <td>1</td>
+        <td>self</td>
+        <td>1</td>
+
+        <td>
+            <div class="quality-bar 
+                good
+                "
+                style="width: 100%;">
+            </div>
+            100%
+        </td>
+    </tr>
     
-        <tr>
-            <td>m2</td>
-            <td>3</td>
-            <td>3</td>
-            <td>1</td>
-            <td>
-                
-                    self
-                
-            </td>
-            <td>
-                
-                    1
-                
-            </td>
-        </tr>
+    <tr>
+        <td>m2</td>
+        <td>3</td>
+        <td>3</td>
+        <td>1</td>
+        <td>self</td>
+        <td>1</td>
+
+        <td>
+            <div class="quality-bar 
+                good
+                "
+                style="width: 100%;">
+            </div>
+            100%
+        </td>
+    </tr>
     
-        <tr>
-            <td>m3</td>
-            <td>4</td>
-            <td>4</td>
-            <td>1</td>
-            <td>
-                
-                    self
-                
-            </td>
-            <td>
-                
-                    1
-                
-            </td>
-        </tr>
+    <tr>
+        <td>m3</td>
+        <td>4</td>
+        <td>4</td>
+        <td>1</td>
+        <td>self</td>
+        <td>1</td>
+
+        <td>
+            <div class="quality-bar 
+                good
+                "
+                style="width: 100%;">
+            </div>
+            100%
+        </td>
+    </tr>
     
-        <tr>
-            <td>x1</td>
-            <td>6</td>
-            <td>6</td>
-            <td>1</td>
-            <td>
-                
-                    self
-                
-            </td>
-            <td>
-                
-                    1
-                
-            </td>
-        </tr>
+    <tr>
+        <td>x1</td>
+        <td>6</td>
+        <td>6</td>
+        <td>1</td>
+        <td>self</td>
+        <td>1</td>
+
+        <td>
+            <div class="quality-bar 
+                good
+                "
+                style="width: 100%;">
+            </div>
+            100%
+        </td>
+    </tr>
     
-        <tr>
-            <td>x2</td>
-            <td>7</td>
-            <td>7</td>
-            <td>1</td>
-            <td>
-                
-                    self
-                
-            </td>
-            <td>
-                
-                    1
-                
-            </td>
-        </tr>
+    <tr>
+        <td>x2</td>
+        <td>7</td>
+        <td>7</td>
+        <td>1</td>
+        <td>self</td>
+        <td>1</td>
+
+        <td>
+            <div class="quality-bar 
+                good
+                "
+                style="width: 100%;">
+            </div>
+            100%
+        </td>
+    </tr>
     
-        <tr>
-            <td>x3</td>
-            <td>8</td>
-            <td>8</td>
-            <td>1</td>
-            <td>
-                
-                    self
-                
-            </td>
-            <td>
-                
-                    1
-                
-            </td>
-        </tr>
+    <tr>
+        <td>x3</td>
+        <td>8</td>
+        <td>8</td>
+        <td>1</td>
+        <td>self</td>
+        <td>1</td>
+
+        <td>
+            <div class="quality-bar 
+                good
+                "
+                style="width: 100%;">
+            </div>
+            100%
+        </td>
+    </tr>
     
-        <tr>
-            <td>x4</td>
-            <td>9</td>
-            <td>9</td>
-            <td>1</td>
-            <td>
-                
-                    self
-                
-            </td>
-            <td>
-                
-                    1
-                
-            </td>
-        </tr>
+    <tr>
+        <td>x4</td>
+        <td>9</td>
+        <td>9</td>
+        <td>1</td>
+        <td>self</td>
+        <td>1</td>
+
+        <td>
+            <div class="quality-bar 
+                good
+                "
+                style="width: 100%;">
+            </div>
+            100%
+        </td>
+    </tr>
     
-        <tr>
-            <td>r1</td>
-            <td>11</td>
-            <td>11</td>
-            <td>1</td>
-            <td>
-                
-                    self
-                
-            </td>
-            <td>
-                
-                    1
-                
-            </td>
-        </tr>
+    <tr>
+        <td>r1</td>
+        <td>11</td>
+        <td>11</td>
+        <td>1</td>
+        <td>self</td>
+        <td>1</td>
+
+        <td>
+            <div class="quality-bar 
+                good
+                "
+                style="width: 100%;">
+            </div>
+            100%
+        </td>
+    </tr>
     
-        <tr>
-            <td>r2</td>
-            <td>12</td>
-            <td>12</td>
-            <td>1</td>
-            <td>
-                
-                    self
-                
-            </td>
-            <td>
-                
-                    1
-                
-            </td>
-        </tr>
+    <tr>
+        <td>r2</td>
+        <td>12</td>
+        <td>12</td>
+        <td>1</td>
+        <td>self</td>
+        <td>1</td>
+
+        <td>
+            <div class="quality-bar 
+                good
+                "
+                style="width: 100%;">
+            </div>
+            100%
+        </td>
+    </tr>
     
 </table>
 
 
-<h2>Syntax Check</h2>
+
+<h2>Syntax Errors</h2>
 
 <p>No syntax errors detected.</p>
 
 
-<h2>Suggestions and Recommendations</h2>
 
-<p>No style warnings or suggestions.</p>
+<h2>Style Suggestions</h2>
+
+<p>No style suggestions — your code looks clean.</p>
+
 
 
 <h2>AST Node Distribution</h2>
 
 <table>
+    <tr><th>Node</th><th>Count</th></tr>
+    
     <tr>
-        <th>Node Type</th>
-        <th>Count</th>
-        <th>Diagram</th>
+        <td>Name</td>
+        <td>0</td>
     </tr>
     
-        <tr>
-            <td>Module</td>
-            <td>1</td>
-            <td>
-                <div class="bar-container">
-                    <div class="bar" style="width: 55px;"></div>
-                </div>
-            </td>
-        </tr>
+    <tr>
+        <td>Assign</td>
+        <td>0</td>
+    </tr>
     
-        <tr>
-            <td>ClassDef</td>
-            <td>3</td>
-            <td>
-                <div class="bar-container">
-                    <div class="bar" style="width: 85px;"></div>
-                </div>
-            </td>
-        </tr>
+    <tr>
+        <td>Call</td>
+        <td>0</td>
+    </tr>
     
-        <tr>
-            <td>FunctionDef</td>
-            <td>9</td>
-            <td>
-                <div class="bar-container">
-                    <div class="bar" style="width: 175px;"></div>
-                </div>
-            </td>
-        </tr>
+    <tr>
+        <td>If</td>
+        <td>0</td>
+    </tr>
     
-        <tr>
-            <td>arguments</td>
-            <td>9</td>
-            <td>
-                <div class="bar-container">
-                    <div class="bar" style="width: 175px;"></div>
-                </div>
-            </td>
-        </tr>
+    <tr>
+        <td>For</td>
+        <td>0</td>
+    </tr>
     
-        <tr>
-            <td>arg</td>
-            <td>9</td>
-            <td>
-                <div class="bar-container">
-                    <div class="bar" style="width: 175px;"></div>
-                </div>
-            </td>
-        </tr>
+    <tr>
+        <td>While</td>
+        <td>0</td>
+    </tr>
     
-        <tr>
-            <td>Pass</td>
-            <td>9</td>
-            <td>
-                <div class="bar-container">
-                    <div class="bar" style="width: 175px;"></div>
-                </div>
-            </td>
-        </tr>
+    <tr>
+        <td>Return</td>
+        <td>0</td>
+    </tr>
+    
+    <tr>
+        <td>Attribute</td>
+        <td>0</td>
+    </tr>
+    
+    <tr>
+        <td>BinOp</td>
+        <td>0</td>
+    </tr>
+    
+    <tr>
+        <td>Try</td>
+        <td>0</td>
+    </tr>
     
 </table>
 

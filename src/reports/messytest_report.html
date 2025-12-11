@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Python Code Analysis Report – clean_code.py</title>
+    <title>Python Code Analysis Report – messytest.py</title>
 
     <style>
         body { font-family: Arial, sans-serif; margin: 30px; background:#faf9fb; }
@@ -51,56 +51,45 @@
 <body>
 
 <h1>Python Code Analysis Report</h1>
-<p><strong>File:</strong> clean_code.py</p>
+<p><strong>File:</strong> messytest.py</p>
 
 
 <!-- ================= OVERALL QUALITY ================= -->
 <h2>Overall Quality Score</h2>
 <div class="overall-track">
     <div class="overall-bar 
-        medium
+        good
         "
-        style="width: 76%;">
+        style="width: 81%;">
     </div>
 </div>
-<p><strong>Moderate Code Quality — 76%</strong></p>
+<p><strong>Excellent Code Quality — 81%</strong></p>
 
 
 <!-- ================= SUMMARY ================= -->
 <h2>Summary Metrics</h2>
 <table>
     <tr><th>Metric</th><th>Value</th></tr>
-    <tr><td>Total Lines</td><td>12</td></tr>
-    <tr><td>Functions</td><td>4</td></tr>
-    <tr><td>Classes</td><td>1</td></tr>
-    <tr><td>Imports</td><td>0</td></tr>
+    <tr><td>Total Lines</td><td>11</td></tr>
+    <tr><td>Functions</td><td>2</td></tr>
+    <tr><td>Classes</td><td>0</td></tr>
+    <tr><td>Imports</td><td>2</td></tr>
     <tr>
         <td>Average Complexity</td>
-        <td>1.2</td>
+        <td>1.0</td>
     </tr>
     <tr>
         <td>Maintainability Index</td>
-        <td>67.58413206219534</td>
+        <td>67.90529802093124</td>
     </tr>
-    <tr><td>Max Nesting</td><td>2</td></tr>
+    <tr><td>Max Nesting</td><td>1</td></tr>
 </table>
 
 
 <!-- ================= CLASSES ================= -->
 <h2>Class Structure</h2>
 
-<table>
-    <tr><th>Name</th><th>Start</th><th>End</th><th>LOC</th><th>Methods</th></tr>
-    
-    <tr>
-        <td>User</td>
-        <td>5</td>
-        <td>9</td>
-        <td>5</td>
-        <td>2</td>
-    </tr>
-    
-</table>
+<p>No classes found.</p>
 
 
 
@@ -112,9 +101,9 @@
     
     <tr>
         <td>add</td>
-        <td>1</td>
-        <td>2</td>
-        <td>2</td>
+        <td>5</td>
+        <td>7</td>
+        <td>3</td>
         <td>a, b</td>
         <td>1</td>
 
@@ -128,45 +117,11 @@
     </tr>
     
     <tr>
-        <td>greet</td>
-        <td>3</td>
-        <td>4</td>
-        <td>2</td>
-        <td>name</td>
-        <td>1</td>
-
-        <td>
-            <div class="quality-bar 
-                good
-                "
-                style="width: 100%;"></div>
-            100%
-        </td>
-    </tr>
-    
-    <tr>
-        <td>__init__</td>
-        <td>6</td>
-        <td>7</td>
-        <td>2</td>
-        <td>self, username</td>
-        <td>1</td>
-
-        <td>
-            <div class="quality-bar 
-                good
-                "
-                style="width: 100%;"></div>
-            100%
-        </td>
-    </tr>
-    
-    <tr>
-        <td>say_hello</td>
+        <td>unused_function</td>
         <td>8</td>
         <td>9</td>
         <td>2</td>
-        <td>self</td>
+        <td></td>
         <td>1</td>
 
         <td>
@@ -192,7 +147,27 @@
 <!-- ================= SUGGESTIONS ================= -->
 <h2>Style Suggestions</h2>
 
-<p>No style suggestions — your code looks clean.</p>
+    
+    <div class="suggestion-box">
+        <div class="suggestion-header">PyFlakes — Line None</div>
+        <div>1:1: &#39;math&#39; imported but unused</div>
+    </div>
+    
+    <div class="suggestion-box">
+        <div class="suggestion-header">PyFlakes — Line None</div>
+        <div>2:1: &#39;os&#39; imported but unused</div>
+    </div>
+    
+    <div class="suggestion-box">
+        <div class="suggestion-header">PyFlakes — Line None</div>
+        <div>4:9: undefined name &#39;z&#39;</div>
+    </div>
+    
+    <div class="suggestion-box">
+        <div class="suggestion-header">PyFlakes — Line None</div>
+        <div>6:5: local variable &#39;result&#39; is assigned to but never used</div>
+    </div>
+    
 
 
 
@@ -203,22 +178,22 @@
     
     <tr>
         <td>Name</td>
-        <td>11</td>
+        <td>12</td>
     </tr>
     
     <tr>
         <td>Assign</td>
-        <td>2</td>
+        <td>5</td>
     </tr>
     
     <tr>
         <td>Call</td>
-        <td>3</td>
+        <td>1</td>
     </tr>
     
     <tr>
         <td>If</td>
-        <td>1</td>
+        <td>0</td>
     </tr>
     
     <tr>
@@ -233,17 +208,17 @@
     
     <tr>
         <td>Return</td>
-        <td>3</td>
+        <td>1</td>
     </tr>
     
     <tr>
         <td>Attribute</td>
-        <td>3</td>
+        <td>0</td>
     </tr>
     
     <tr>
         <td>BinOp</td>
-        <td>1</td>
+        <td>3</td>
     </tr>
     
     <tr>

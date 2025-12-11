@@ -274,3 +274,36 @@ input[type="file"] {
     justify-content: center;
     margin-top: 40px;
 }
+.syntax-warning-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    background: #fff4e5;
+    border-left: 5px solid #ffb84d;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    animation: fadeIn 0.35s ease;
+}
+
+.syntax-warning-icon {
+    font-size: 26px;
+}
+
+.syntax-warning-text h4 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #b86a00;
+}
+
+.syntax-warning-text p {
+    margin: 4px 0 0;
+    font-size: 15px;
+    color: #8a5a00;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
